@@ -3,9 +3,80 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33801.468
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{F870BCB6-0C1B-4C41-AA27-1C24F109BC2B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewsManagement", "NewsManagement", "{40468B53-0260-49EA-992E-F74FC6B84BB2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NW.Domain", "NW.Domain", "{65EB9E6F-0217-4E19-A9B2-4DBCE617A958}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsManagement.Domain", "NewsManagement.Domain\NewsManagement.Domain.csproj", "{0933739E-B790-4EA6-88A2-0A865FC0025E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "0_Framework", "0_Framework\0_Framework.csproj", "{B451CEA3-8997-4008-9AA8-190D8A348608}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NW.Infrastructure", "NW.Infrastructure", "{B0DD496F-FA08-4D63-9B7B-1274D2050C36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsManagement.Infrastructure.EFCore", "NewsManagement.Infrastructure\NewsManagement.Infrastructure.EFCore.csproj", "{529B5818-3E38-498E-BB40-C71BB93E194C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceHost", "ServiceHost\ServiceHost.csproj", "{E29DD919-6525-477E-A46A-F883E19F89DA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NW.Application", "NW.Application", "{AD1A9A9A-07C4-4447-A353-909A2E09AF8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsManagement.Application.Contrasts", "NewsManagement.Application.Contrasts\NewsManagement.Application.Contrasts.csproj", "{EDBF0643-B90A-4B56-9388-DED907BAC84F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsManagement.Infrastructure.Configuration", "NewsManagement.Infrastructure.Configuration\NewsManagement.Infrastructure.Configuration.csproj", "{EEC8B7B6-0252-4F2C-AD42-DE957D3A6036}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsManagement.Application", "NewsManagement.Application\NewsManagement.Application.csproj", "{144C5721-C7A6-41F5-94FF-117172100F1C}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0933739E-B790-4EA6-88A2-0A865FC0025E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0933739E-B790-4EA6-88A2-0A865FC0025E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0933739E-B790-4EA6-88A2-0A865FC0025E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0933739E-B790-4EA6-88A2-0A865FC0025E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B451CEA3-8997-4008-9AA8-190D8A348608}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B451CEA3-8997-4008-9AA8-190D8A348608}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B451CEA3-8997-4008-9AA8-190D8A348608}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B451CEA3-8997-4008-9AA8-190D8A348608}.Release|Any CPU.Build.0 = Release|Any CPU
+		{529B5818-3E38-498E-BB40-C71BB93E194C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{529B5818-3E38-498E-BB40-C71BB93E194C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{529B5818-3E38-498E-BB40-C71BB93E194C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{529B5818-3E38-498E-BB40-C71BB93E194C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E29DD919-6525-477E-A46A-F883E19F89DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E29DD919-6525-477E-A46A-F883E19F89DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E29DD919-6525-477E-A46A-F883E19F89DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E29DD919-6525-477E-A46A-F883E19F89DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDBF0643-B90A-4B56-9388-DED907BAC84F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDBF0643-B90A-4B56-9388-DED907BAC84F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDBF0643-B90A-4B56-9388-DED907BAC84F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDBF0643-B90A-4B56-9388-DED907BAC84F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEC8B7B6-0252-4F2C-AD42-DE957D3A6036}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEC8B7B6-0252-4F2C-AD42-DE957D3A6036}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEC8B7B6-0252-4F2C-AD42-DE957D3A6036}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEC8B7B6-0252-4F2C-AD42-DE957D3A6036}.Release|Any CPU.Build.0 = Release|Any CPU
+		{144C5721-C7A6-41F5-94FF-117172100F1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{144C5721-C7A6-41F5-94FF-117172100F1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{144C5721-C7A6-41F5-94FF-117172100F1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{144C5721-C7A6-41F5-94FF-117172100F1C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{40468B53-0260-49EA-992E-F74FC6B84BB2} = {F870BCB6-0C1B-4C41-AA27-1C24F109BC2B}
+		{65EB9E6F-0217-4E19-A9B2-4DBCE617A958} = {40468B53-0260-49EA-992E-F74FC6B84BB2}
+		{0933739E-B790-4EA6-88A2-0A865FC0025E} = {65EB9E6F-0217-4E19-A9B2-4DBCE617A958}
+		{B451CEA3-8997-4008-9AA8-190D8A348608} = {F870BCB6-0C1B-4C41-AA27-1C24F109BC2B}
+		{B0DD496F-FA08-4D63-9B7B-1274D2050C36} = {40468B53-0260-49EA-992E-F74FC6B84BB2}
+		{529B5818-3E38-498E-BB40-C71BB93E194C} = {B0DD496F-FA08-4D63-9B7B-1274D2050C36}
+		{E29DD919-6525-477E-A46A-F883E19F89DA} = {F870BCB6-0C1B-4C41-AA27-1C24F109BC2B}
+		{AD1A9A9A-07C4-4447-A353-909A2E09AF8F} = {40468B53-0260-49EA-992E-F74FC6B84BB2}
+		{EDBF0643-B90A-4B56-9388-DED907BAC84F} = {AD1A9A9A-07C4-4447-A353-909A2E09AF8F}
+		{EEC8B7B6-0252-4F2C-AD42-DE957D3A6036} = {B0DD496F-FA08-4D63-9B7B-1274D2050C36}
+		{144C5721-C7A6-41F5-94FF-117172100F1C} = {AD1A9A9A-07C4-4447-A353-909A2E09AF8F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6702D0EF-DD43-4832-848F-04DA2E999E3C}
