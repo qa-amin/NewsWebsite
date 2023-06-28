@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "Admin | Category";
+	ViewData["Title"] = "مدیریت دسته بندی خبرها";
 }
 
 
@@ -36,7 +36,7 @@
 				مدیریت دسته بندی اخبار
 			</div>
 			<div class="card-body">
-				@await Component.InvokeAsync("CategoryTableComponent")
+				@await Html.PartialAsync("_CategoryTable")
 			</div>
 		</div>
 	</div>
