@@ -1,3 +1,4 @@
+using AccountManagement.Infrastructure.Configuration;
 using NewsManagement.Infrastructure.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,7 @@ builder.Services.AddControllersWithViews();
 var cs = builder.Configuration.GetConnectionString("sqlserver");
 
 NewsManagementBootstrapper.Config(builder.Services,cs);
+AccountManagementBootstrapper.Config(builder.Services, cs);
 
 var app = builder.Build();
 

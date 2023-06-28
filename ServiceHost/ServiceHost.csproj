@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AccountManagement.Infrastructure.EFCore\AccountManagement.Infrastructure.Configuration.csproj" />
     <ProjectReference Include="..\NewsManagement.Infrastructure.Configuration\NewsManagement.Infrastructure.Configuration.csproj" />
     <ProjectReference Include="..\NewsManagement.Infrastructure\NewsManagement.Infrastructure.EFCore.csproj" />
   </ItemGroup>
