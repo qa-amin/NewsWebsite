@@ -21,17 +21,27 @@ namespace AccountManagement.Domain.RoleAgg
 		public virtual ICollection<UserRole> Users { get; set; }
 		public virtual ICollection<RoleClaim> Claims { get; set; }
 
-		public Role()
+		public Role(string name,string description)
 		{
-			CreationDate = DateTime.Now;
+			Name = name;
+            Description = description;
+            CreationDate = DateTime.Now;
 			IsRemove = false;
 		}
 
-		public void Edit(string name, string description)
-		{
-			Name = name;
+        public void Edit(string name, string description)
+        {
+            Name = name;
 			Description = description;
+			UpdateDate = DateTime.Now;
+        }
 
-		}
+        public void Delete()
+        {
+			IsRemove = true;
+			RemoveDate = DateTime.Now;
+        }
+
+		
 	}
 }

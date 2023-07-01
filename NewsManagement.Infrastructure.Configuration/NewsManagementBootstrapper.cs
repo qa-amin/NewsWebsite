@@ -17,6 +17,8 @@ namespace NewsManagement.Infrastructure.Configuration
 
 			services.AddTransient<INewsCategoryRepository, NewsCategoryRepository>();
 			services.AddTransient<INewsCategoryApplication, NewsCategoryApplication>();
+
+
 		}
 	}
 }

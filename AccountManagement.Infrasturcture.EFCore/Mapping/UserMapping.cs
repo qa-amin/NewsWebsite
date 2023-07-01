@@ -16,8 +16,9 @@ namespace AccountManagement.Infrastructure.EFCore.Mapping
 			builder.ToTable("Users", "identity");
 			builder.HasKey(x => x.Id);
 
+           // builder.HasQueryFilter(p => !p.IsRemove);
 
-			builder.Property(x => x.FirstName).HasMaxLength(100).IsRequired();
+            builder.Property(x => x.FirstName).HasMaxLength(100).IsRequired();
 			builder.Property(x => x.LastName).HasMaxLength(100).IsRequired();
 		}
 	}

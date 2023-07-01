@@ -146,6 +146,7 @@ ol,
 ul,
 dl {
     margin: 0;
+    padding: 0px 0.7rem;
 }
 
     ol ol,
@@ -3977,8 +3978,8 @@ input[type='button'].btn-block {
 
         .input-group > .form-control:not(:first-child),
         .input-group > .custom-select:not(:first-child) {
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
         }
 
     .input-group > .custom-file {
@@ -4078,8 +4079,8 @@ input[type='button'].btn-block {
 .input-group > .input-group-append:not(:last-child) > .input-group-text,
 .input-group > .input-group-append:last-child > .btn:not(:last-child):not(.dropdown-toggle),
 .input-group > .input-group-append:last-child > .input-group-text:not(:last-child) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
 .input-group > .input-group-append > .btn,
@@ -4096,7 +4097,7 @@ input[type='button'].btn-block {
     position: relative;
     display: block;
     min-height: 1.5rem;
-    padding-left: 1.75rem;
+    padding-right: 1.75rem;
 }
 
 .custom-control-inline {
@@ -4142,7 +4143,7 @@ input[type='button'].btn-block {
     .custom-control-label::before {
         position: absolute;
         top: .125rem;
-        left: -1.75rem;
+        right: -1.75rem;
         display: block;
         width: 1.25rem;
         height: 1.25rem;
@@ -4159,7 +4160,7 @@ input[type='button'].btn-block {
     .custom-control-label::after {
         position: absolute;
         top: .125rem;
-        left: -1.75rem;
+        right: -1.75rem;
         display: block;
         width: 1.25rem;
         height: 1.25rem;
@@ -5391,8 +5392,9 @@ input[type='button'].btn-block {
 }
 
 .badge {
-    font-size: 66%;
-    font-weight: 600;
+    font-size: 80%;
+    font-weight: 100;
+    font-family:Vazir_Medium;
     line-height: 1;
     display: inline-block;
     padding: .35rem .375rem;
@@ -6454,6 +6456,7 @@ button.close {
     box-shadow: 0 .5rem 2rem 0 rgba(0, 0, 0, .2);
     text-shadow: none;
     line-break: auto;
+    direction:ltr !important;
 }
 
     .popover .arrow {
@@ -14775,7 +14778,7 @@ a.text-lighter:focus {
 }
 
 .alert {
-    font-size: .875rem;
+    font-size: .775rem;
 }
 
 .alert-heading {
@@ -14969,7 +14972,7 @@ a.text-lighter:focus {
     }
 
 .btn {
-    font-size: .875rem;
+    font-size: .775rem;
     position: relative;
     transition: all .15s ease;
     letter-spacing: .025em;
@@ -16135,14 +16138,9 @@ textarea[resize='horizontal'] {
     }
 
         .input-group .form-control:not(:first-child) {
-            padding-right: 0;
             border-right: 0;
         }
 
-        .input-group .form-control:not(:last-child) {
-            padding-left: 0;
-            border-left: 0;
-        }
 
         .input-group .form-control:focus {
             box-shadow: none;
@@ -16341,12 +16339,6 @@ textarea[resize='horizontal'] {
     .input-group .form-control {
         box-shadow: none;
     }
-
-        .input-group .form-control:not(:first-child) {
-            padding-left: 0;
-            border-left: 0;
-        }
-
         .input-group .form-control:not(:last-child) {
             padding-right: 0;
             border-right: 0;
@@ -17889,10 +17881,6 @@ textarea[resize='horizontal'] {
     border: 0;
 }
 
-.popover-header {
-    font-weight: 600;
-}
-
 .popover-primary {
     background-color: #5e72e4;
 }
@@ -18520,7 +18508,6 @@ textarea[resize='horizontal'] {
 }
 
 p {
-    font-size: 1rem;
     font-weight: 300;
     line-height: 1.7;
 }
@@ -19342,4 +19329,13 @@ html:not([dir='rtl']) .noUi-horizontal .noUi-handle {
 .tox .tox-form__group {
     margin-bottom: 12px !important;
 }
-    
+
+.modal-open {
+    overflow: auto !important;
+    padding-right: 0px !important;
+}
+
+body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
+    overflow: auto !important;
+}
+

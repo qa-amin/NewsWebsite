@@ -27,6 +27,46 @@ namespace AccountManagement.Domain.UserAgg
 		public virtual ICollection<UserRole> Roles { get; set; }
 		public virtual ICollection<UserClaim> Claims { get; set; }
 
-	}
+        public User(string userName, string email, string phoneNumber ,string firstName, string lastName, DateTime? birthDate, string image, int gender)
+        {
+			UserName = userName;
+			Email = email;
+			PhoneNumber = phoneNumber;
+            FirstName = firstName;
+            LastName = lastName;
+            BirthDate = birthDate;
+            Image = image;
+            Gender = gender;
+            RegisterDateTime = DateTime.Now;
+            IsRemove = false;
+            IsActive = true;
+			EmailConfirmed = false;
+			
+        }
+        public void Edit(string userName, string email, string phoneNumber, string firstName, string lastName, DateTime? birthDate, string image, int gender)
+        {
+            UserName = userName;
+            Email = email;
+            PhoneNumber = phoneNumber;
+            FirstName = firstName;
+            LastName = lastName;
+            BirthDate = birthDate;
+            if (!string.IsNullOrWhiteSpace(image))
+                Image = image;
+            Gender = gender;
+            RegisterDateTime = DateTime.Now;
+            IsRemove = false;
+            IsActive = true;
+            EmailConfirmed = false;
+            UpdateDate = DateTime.Now;
+
+        }
+
+        public void Delete()
+        {
+            IsRemove = true;
+            RemoveDate = DateTime.Now;
+        }
+    }
 	
 }

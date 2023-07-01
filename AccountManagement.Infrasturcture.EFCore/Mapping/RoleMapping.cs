@@ -15,7 +15,8 @@ namespace AccountManagement.Infrastructure.EFCore.Mapping
 		{
 			builder.ToTable("Roles", "identity");
 			builder.HasKey(x => x.Id);
+            builder.HasQueryFilter(p => !p.IsRemove);
 
-		}
+        }
 	}
 }
