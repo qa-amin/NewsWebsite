@@ -1,29 +1,29 @@
-﻿using _0_Framework.Application;
-using AccountManagement.Application.Contrast.Role;
+﻿using System.Linq.Dynamic.Core;
+using System.Security.Claims;
+using System.Security.Principal;
+using _0_Framework.Application;
 using AccountManagement.Application.Contrast.User;
 using AccountManagement.Domain.RoleAgg;
 using AccountManagement.Domain.UserAgg;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Linq.Dynamic.Core;
-using System.Security.Cryptography.X509Certificates;
 using NewsWebsite.Common;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
-namespace AccountManagemetn.Application
+namespace AccountManagement.Application
 {
     public class UserApplication : IUserApplication
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly IFileUploader _fileUploader;
 
-        public UserApplication(UserManager<User> userManager, IFileUploader fileUploader, RoleManager<Role> roleManager)
+        public UserApplication(UserManager<User> userManager, IFileUploader fileUploader, RoleManager<Role> roleManager, SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _fileUploader = fileUploader;
             _roleManager = roleManager;
+            _signInManager = signInManager;
         }
 
         public OperationResult Create(CreateUser command)
@@ -128,6 +128,50 @@ namespace AccountManagemetn.Application
                 massage += error.Description + Environment.NewLine;
             }
             return operation.Failed(massage);
+        }
+
+        public OperationResult Login(Login command)
+        {
+            
+            var operation = new OperationResult();
+
+            var user = _userManager.FindByNameAsync(command.UserName).Result;
+            if (user == null)
+            {
+                return operation.Failed(ApplicationMessages.UserNotFound);
+            }
+
+            if (user.IsActive)
+            {
+                var result = _signInManager.PasswordSignInAsync(user, command.Password, command.RememberMe, true).Result;
+                if (result.Succeeded)
+                {
+                    return operation.Succeeded(ApplicationMessages.UserLogin);
+                }
+                else if (result.IsLockedOut)
+                    return operation.Failed(ApplicationMessages.LockAccount);
+
+                //else if (result.RequiresTwoFactor)
+                //    return RedirectToAction("SendCode", new { RememberMe = ViewModel.RememberMe });
+
+                else
+                {
+                    return operation.Failed(ApplicationMessages.WrongPassword);
+                }
+            }
+            else
+            {
+                return operation.Failed(ApplicationMessages.InActive);
+            }
+            
+
+
+
+        }
+
+        public void SignOut()
+        {
+            _signInManager.SignOutAsync();
         }
 
         public (List<UserViewModel>, long) Search(UserSearchModel command)
@@ -237,6 +281,13 @@ namespace AccountManagemetn.Application
                 Image = user.Image,
 
             };
+        }
+
+        public  User GetUser(ClaimsPrincipal command)
+        {
+           var user =  _userManager.GetUserAsync(command).Result;
+
+           return  user;
         }
 
         private List<UserViewModel> GetPaginateUsers(int offset, int limit, string orderBy, string searchText)

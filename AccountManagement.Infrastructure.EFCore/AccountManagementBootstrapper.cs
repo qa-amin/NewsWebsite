@@ -9,7 +9,6 @@ using AccountManagement.Application;
 using AccountManagement.Application.Contrast.Role;
 using AccountManagement.Application.Contrast.User;
 using AccountManagement.Domain.UserAgg;
-using AccountManagemetn.Application;
 
 namespace AccountManagement.Infrastructure.Configuration
 {

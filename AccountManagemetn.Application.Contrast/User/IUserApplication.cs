@@ -1,4 +1,5 @@
-﻿using _0_Framework.Application;
+﻿using System.Security.Claims;
+using _0_Framework.Application;
 
 namespace AccountManagement.Application.Contrast.User
 {
@@ -7,11 +8,14 @@ namespace AccountManagement.Application.Contrast.User
         OperationResult Create(CreateUser command);
         OperationResult Edit(EditUser command);
         OperationResult Delete(long id);
+        OperationResult Login(Login command);
+        void SignOut();
         (List<UserViewModel>, long) Search(UserSearchModel searchModel);
 
         EditUser GetUserWithRole(long id);
 
         EditUser GetDetail(long id);
+        Domain.UserAgg.User GetUser(ClaimsPrincipal command);
 
 
     }
