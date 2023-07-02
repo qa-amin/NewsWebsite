@@ -7,6 +7,7 @@ namespace AccountManagement.Application.Contrast.User
     {
         OperationResult Create(CreateUser command);
         OperationResult Edit(EditUser command);
+        (OperationResult,string) EditProfile(ProfileViewModel command);
         OperationResult Delete(long id);
         OperationResult Login(Login command);
         OperationResult ChangePssword(ChangePass command, Domain.UserAgg.User user);
@@ -17,6 +18,7 @@ namespace AccountManagement.Application.Contrast.User
 
         EditUser GetDetail(long id);
         Domain.UserAgg.User GetUser(ClaimsPrincipal command);
+        ProfileViewModel GetProfileDetail( long id);
 
 
     }

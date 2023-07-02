@@ -65,8 +65,15 @@ namespace AccountManagement.Application
 
             var newRoleName = _roleManager.FindByIdAsync(command.RoleId).Result.Name;
 
-            var path = $"profilePhotos";
-            var imagePath = _fileUploader.Upload(command.ImageFile, path);
+
+            var imagePath = command.Image;
+            if (command.ImageFile != null)
+            {
+                var path = $"profilePhotos";
+                 imagePath = _fileUploader.Upload(command.ImageFile, path);
+            }
+
+            
 
             var birthDate = command.PersianBirthDate.ConvertShamsiToMiladi();
 
@@ -105,6 +112,45 @@ namespace AccountManagement.Application
             }
             return operation.Failed(massage);
 
+        }
+
+        public (OperationResult, string)  EditProfile(ProfileViewModel command)
+        {
+
+            var operation = new OperationResult();
+
+
+            var imagePath = command.Image;
+            if (command.ImageFile != null)
+            {
+                var path = $"profilePhotos";
+                imagePath = _fileUploader.Upload(command.ImageFile, path);
+            }
+
+            var birthDate = command.PersianBirthDate.ConvertShamsiToMiladi();
+
+            var editUser = _userManager.FindByIdAsync(command.Id.ToString()).Result;
+
+            if (_userManager.Users.Any(p => p.UserName == command.UserName && p.Id != command.Id))
+            {
+                return (operation.Failed(ApplicationMessages.DuplicatedRecord), imagePath);
+            }
+            editUser.Edit(command.UserName, command.Email, command.PhoneNumber, command.FirstName, command.LastName
+                , birthDate, imagePath, command.Gender);
+
+            var result = _userManager.UpdateAsync(editUser).Result;
+
+            if (result.Succeeded)
+            {
+                return (operation.Succeeded(ApplicationMessages.EditProfile),imagePath);
+            }
+
+            var massage = "";
+            foreach (var error in result.Errors.ToList())
+            {
+                massage += error.Description + Environment.NewLine;
+            }
+            return (operation.Failed(massage),imagePath);
         }
 
         public OperationResult Delete(long id)
@@ -305,6 +351,27 @@ namespace AccountManagement.Application
            var user =  _userManager.GetUserAsync(command).Result;
 
            return  user;
+        }
+
+        public ProfileViewModel  GetProfileDetail(long id)
+        {
+            var user = GetDetail(id);
+            var proUser = new ProfileViewModel
+            {
+
+                BirthDate = user.BirthDate,
+                PersianBirthDate = user.BirthDate.ConvertMiladiToShamsi("yyyy/MM/dd"),
+                Id = user.Id,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                UserName = user.UserName,
+                PhoneNumber = user.PhoneNumber,
+                Gender = user.Gender,
+                Image = user.Image,
+
+            };
+            return (proUser) ;
         }
 
         private List<UserViewModel> GetPaginateUsers(int offset, int limit, string orderBy, string searchText)

@@ -84,6 +84,39 @@ namespace ServiceHost.Areas.Admin.Controllers.Manage
             return View(command);
         }
 
+        [Area("Admin")]
+        [Route("admin/manage/Profile")]
+        [HttpGet]
+        public IActionResult Profile(long id)
+        {
+            var user = _userApplication.GetProfileDetail(id);
+
+            return View(user);
+        }
+
+        [Area("Admin")]
+        [Route("admin/manage/Profile")]
+        [HttpPost]
+        public IActionResult Profile(ProfileViewModel command)
+        {
+            var image =command.Image;
+            if (ModelState.IsValid)
+            {
+                var (result,Image) = _userApplication.EditProfile(command);
+                image = Image;
+                if (result.IsSucceeded)
+                {
+                    ViewBag.Alert = result.Message;
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty,result.Message);
+                }
+            }
+
+            command.Image = image;
+            return View(command);
+        }
 
     }
 }
