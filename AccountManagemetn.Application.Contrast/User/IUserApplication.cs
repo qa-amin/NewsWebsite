@@ -9,6 +9,7 @@ namespace AccountManagement.Application.Contrast.User
         OperationResult Edit(EditUser command);
         OperationResult Delete(long id);
         OperationResult Login(Login command);
+        OperationResult ChangePssword(ChangePass command, Domain.UserAgg.User user);
         void SignOut();
         (List<UserViewModel>, long) Search(UserSearchModel searchModel);
 

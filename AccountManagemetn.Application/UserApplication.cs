@@ -169,6 +169,23 @@ namespace AccountManagement.Application
 
         }
 
+        public OperationResult ChangePssword(ChangePass command, User user)
+        {
+            var operation = new OperationResult();
+            _userManager.RemovePasswordAsync(user);
+           var result =  _userManager.AddPasswordAsync(user, command.NewPassword).Result;
+           if (result.Succeeded)
+           {
+               return operation.Succeeded(ApplicationMessages.ChangPass);
+           }
+           var massage = "";
+           foreach (var error in result.Errors.ToList())
+           {
+               massage += error.Description + Environment.NewLine;
+           }
+           return operation.Failed(massage);
+        }
+
         public void SignOut()
         {
             _signInManager.SignOutAsync();
