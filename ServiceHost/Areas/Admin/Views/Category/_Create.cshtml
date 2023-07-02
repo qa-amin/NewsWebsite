@@ -19,10 +19,7 @@
             </div>
             <div class="modal-body clearfix">
                 <form asp-action="Create">
-                    @if (ViewData.ModelState.IsValid.ToString() == "False")
-                    {
-                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-                    }
+                   
 
                     <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
                    
@@ -63,13 +60,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">بستن</button>
-              @*  @if (Model.CategoryId != null)
-                {
-                    <button type="submit" class="btn btn-sm btn-labeled btn-success mr-1" data-save="modal">
-                        ذخیره تغییرات
-                    </button>
-                }
-                else*@
+             
                 
                     <button type="submit" class="btn btn-sm btn-labeled btn-success mr-1" data-save="modal">
                         افزودن اطلاعات
@@ -88,9 +79,4 @@
         });
     });
 </script>
-@section Scripts
-    {
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
-}

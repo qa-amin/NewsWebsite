@@ -81,7 +81,7 @@ namespace AccountManagemetn.Application
                 return operation.Failed(ApplicationMessages.DuplicatedRecord);
             }
             editUser.Edit(command.UserName,command.Email,command.PhoneNumber,command.FirstName,command.LastName
-            ,birthDate,command.Image,command.Gender);
+            ,birthDate, imagePath, command.Gender);
 
             var result = _userManager.UpdateAsync(editUser).Result;
 

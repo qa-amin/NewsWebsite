@@ -10,10 +10,7 @@
             </div>
             <div class="modal-body clearfix">
                 <form asp-controller="RoleManagement" asp-action="Edit">
-                    @if (ViewData.ModelState.IsValid.ToString() == "False")
-                    {
-                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-                    }
+                   
 
                     <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
                     <input type="hidden" asp-for="Id" />

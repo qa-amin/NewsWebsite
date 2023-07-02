@@ -73,9 +73,9 @@
         ].join('')
     }
 
-    // function checkBoxFormat(value, row) {
-    //   return '<input type="checkbox" name="btSelectItem" value="' + row.Id + '" />';
-    //}
+     function checkBoxFormat(value, row) {
+       return '<input type="checkbox" name="btSelectItem" value="' + row.Id + '" />';
+    }
 
 
         function totalTextFormatter(data) {
@@ -97,7 +97,8 @@
                         checkbox: true,
                         rowspan: 2,
                         align: 'center',
-                        valign: 'middle'
+                        valign: 'middle',
+                    formatter: checkBoxFormat
                     }, {
                         title: 'ردیف',
                         field: 'ردیف',

@@ -63,15 +63,18 @@ namespace ServiceHost.Areas.Admin.Controllers.User
         [Area("admin")]
         [Route("admin/user/Create")]
         [HttpPost]
-        public void Create(CreateUser command)
+        public IActionResult Create(CreateUser command)
         {
 
-            var result = _userApplication.Create(command);
+	        if (ModelState.IsValid)
+	        {
+		        var result = _userApplication.Create(command);
+		        TempData["ShowMassage"] = JsonConvert.SerializeObject(result);
+			}
 
+	        ViewBag.Roles = _roleApplication.GetAllRoles();
 
-
-            TempData["ShowMassage"] = JsonConvert.SerializeObject(result);
-
+			return PartialView("_Create", command);
 
 
         }
@@ -93,14 +96,24 @@ namespace ServiceHost.Areas.Admin.Controllers.User
         [Area("admin")]
         [Route("admin/user/Edit")]
         [HttpPost]
-        public void Edit(EditUser command)
+        public IActionResult Edit(EditUser command)
         {
+	        ModelState.Remove("Password");
+	        ModelState.Remove("ConfirmPassword");
+	        ModelState.Remove("ImageFile");
+	        ModelState.Remove("Image");
+	        ModelState.Remove("Roles");
 
-            var result = _userApplication.Edit(command);
+			if (ModelState.IsValid)
+	        {
+		        var result = _userApplication.Edit(command);
+
+		        TempData["ShowMassage"] = JsonConvert.SerializeObject(result);
+			}
 
 
-
-            TempData["ShowMassage"] = JsonConvert.SerializeObject(result);
+	        ViewBag.Roles = _roleApplication.GetAllRoles();
+	        return PartialView("_Edit", command);
 
 
 

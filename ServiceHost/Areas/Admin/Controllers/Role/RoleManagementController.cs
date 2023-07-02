@@ -1,5 +1,7 @@
 ﻿using AccountManagement.Application.Contrast.Role;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using NewsManagement.Application.Contrasts.NewsCategory;
 using Newtonsoft.Json;
 
@@ -50,26 +52,54 @@ namespace ServiceHost.Areas.Admin.Controllers.Role
         {
             
 
-            return PartialView("_Create");
+            return PartialView("_Create",new CreateRole());
         }
 
+
+  //      [Area("admin")]
+  //      [Route("admin/role/Create")]
+  //      [HttpPost]
+  //      public void Create(CreateRole command)
+  //      {
+
+	        
+
+	 //       var result = _roleApplication.Create(command);
+
+
+	 //       TempData["ShowMassage"] = JsonConvert.SerializeObject(result);
+
+
+
+		//}
 
         [Area("admin")]
         [Route("admin/role/Create")]
         [HttpPost]
-        public void Create(CreateRole command)
+        public IActionResult Create(CreateRole command)
         {
-            var result = _roleApplication.Create(command);
+
+	        if (ModelState.IsValid)
+	        {
+		        var result = _roleApplication.Create(command);
 
 
-            TempData["ShowMassage"] = JsonConvert.SerializeObject(result);
+		        TempData["ShowMassage"] = JsonConvert.SerializeObject(result);
 
+		        
+	        }
+	       
+	        return PartialView("_Create", command);
+			
+
+
+	        
 
 
         }
 
 
-        [Area("admin")]
+		[Area("admin")]
         [Route("admin/role/Edit")]
         [HttpGet]
         public IActionResult Edit(long id)
@@ -92,13 +122,17 @@ namespace ServiceHost.Areas.Admin.Controllers.Role
         [Area("admin")]
         [Route("admin/role/Edit")]
         [HttpPost]
-        public void Edit(EditRole command)
+        public IActionResult Edit(EditRole command)
         {
-            var result = _roleApplication.Edit(command);
-            
+	        if (ModelState.IsValid)
+	        {
+		        var result = _roleApplication.Edit(command);
 
-            TempData["ShowMassage"] = JsonConvert.SerializeObject(result);
 
+		        TempData["ShowMassage"] = JsonConvert.SerializeObject(result);
+			}
+
+	        return PartialView("_Edit", command);
         }
 
         [Area("admin")]

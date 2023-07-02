@@ -83,7 +83,7 @@
                 html.push('<p><b>' + key + ':</b> ' + value + '</p>')
 
             if (key == "تصویر") {
-                var url = '@string.Format("{0}://{1}", Context.Request.Scheme, Context.Request.Host)' + '/avatars/' + value;
+                var url = '@string.Format("{0}://{1}", Context.Request.Scheme, Context.Request.Host)' + '/ProjectPictures/' + value;
                 html.push('<p><b>' + key + ':</b> <img src="' + url + '" height="50" />')
             }
 
@@ -136,7 +136,7 @@
                     rowspan: 2,
                     align: 'center',
                     valign: 'middle',
-                    //formatter: checkBoxFormat
+                    formatter: checkBoxFormat
                 }, {
                     title: 'ردیف',
                     field: 'ردیف',

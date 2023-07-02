@@ -17,9 +17,6 @@ namespace NewsManagement.Application.Contrasts.NewsCategory
         [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string CategoryName { get; set; }
 
-        [JsonPropertyName("ردیف")]
-        public int Row { get; set; }
-
         [Display(Name = "دسته پدر"), JsonPropertyName("دسته پدر")]
         public string? ParentCategoryName { get; set; }
 

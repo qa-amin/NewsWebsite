@@ -11,6 +11,7 @@ namespace ServiceHost.Areas.Admin.Controllers.ShowMassage
 		public JsonResult Index()
         {
             var value = JsonConvert.DeserializeObject<OperationResult>(TempData["ShowMassage"].ToString());
+            
 
             return new JsonResult(value);
 		}

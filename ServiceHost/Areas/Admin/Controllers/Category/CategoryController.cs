@@ -57,14 +57,17 @@ namespace ServiceHost.Areas.Admin.Controllers.Category
         [Area("admin")]
         [Route("admin/category/Create")]
         [HttpPost]
-        public void Create(CreateNewsCategory command)
+        public IActionResult Create(CreateNewsCategory command)
         {
-			var result = _newsCategoryApplication.Create(command);
-            
+	        if (ModelState.IsValid)
+	        {
+		        var result = _newsCategoryApplication.Create(command);
 
-            TempData["ShowMassage"] = JsonConvert.SerializeObject(result);
 
+		        TempData["ShowMassage"] = JsonConvert.SerializeObject(result);
+			}
 
+	        return PartialView("_Create");
 
         }
 
@@ -83,12 +86,17 @@ namespace ServiceHost.Areas.Admin.Controllers.Category
         [Area("admin")]
         [Route("admin/category/Edit")]
         [HttpPost]
-        public void Edit(EditNewsCategory command)
+        public IActionResult Edit(EditNewsCategory command)
         {
-            var result = _newsCategoryApplication.Edit(command);
+	        if (ModelState.IsValid)
+	        {
+		        var result = _newsCategoryApplication.Edit(command);
 
-            TempData["ShowMassage"] = JsonConvert.SerializeObject(result);
+		        TempData["ShowMassage"] = JsonConvert.SerializeObject(result);
+			}
 
+	        ViewBag.Categories = _newsCategoryApplication.GetAllCategories();
+	        return PartialView("_Edit", command);
         }
 
 

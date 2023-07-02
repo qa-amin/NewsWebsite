@@ -40,7 +40,7 @@ namespace AccountManagement.Application.Contrast.User
         [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
 		public string PersianBirthDate { get; set; }
 
-		[Display(Name = "تصویر پروفایل"), JsonPropertyName("تصویر پروفایل")]
+		[Display(Name = "تصویر پروفایل"), JsonPropertyName("تصویر")]
 		public string Image { get; set; }
 
 		[Display(Name = "تاریخ عضویت"),JsonIgnore]

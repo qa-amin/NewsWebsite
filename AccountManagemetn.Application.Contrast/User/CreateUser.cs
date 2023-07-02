@@ -8,9 +8,6 @@ namespace AccountManagement.Application.Contrast.User
 	public class CreateUser
 	{
 
-		[JsonPropertyName("ردیف")]
-		public int Row { get; set; }
-
 		[Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
 		[Display(Name = "نام کاربری"), JsonPropertyName("نام کاربری")]
 		public string UserName { get; set; }
@@ -32,40 +29,31 @@ namespace AccountManagement.Application.Contrast.User
 		[Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
 		public string LastName { get; set; }
 
-		[Display(Name = "تاریخ تولد")]
-		public DateTime? BirthDate { get; set; }
+		
 
-		[Display(Name = "تاریخ تولد")]
+		[Display(Name = "تاریخ تولد"), JsonPropertyName("تاریخ تولد")]
 		[Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
 		public string PersianBirthDate { get; set; }
 
-
-		[Display(Name = "تاریخ عضویت"), System.Text.Json.Serialization.JsonIgnore]
-		public DateTime? RegisterDateTime { get; set; }
-
-		[Display(Name = "تاریخ عضویت")]
-		public string PersianRegisterDateTime { get; set; }
-
-		[Display(Name = "فعال / غیرفعال")]
-		public bool IsActive { get; set; }
-
-		[Display(Name = "جنسیت")]
+		[Display(Name = "جنسیت"), JsonIgnore]
+		[Required(ErrorMessage = "انتخاب {0} الزامی است.")]
 		public int Gender { get; set; }
 
-		[Display(Name = "نقش")]
-		public string RoleName { get; set; }
 
         [JsonIgnore, Display(Name = "نقش")]
         [Required(ErrorMessage = "انتخاب {0} الزامی است.")]
         public string RoleId { get; set; }
-        [JsonIgnore]
-        public ICollection<UserRole> Roles { get; set; }
-        [Display(Name = "رمز")]
-        public string Password { get; set; }
+       
 
-        [Display(Name = "تکرار رمز")]
-		[Compare(nameof(Password))]
-        public string ConfirmPassword { get; set; }
+        [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
+        //[StringLength(100, ErrorMessage = "{0} باید دارای حداقل {2} کاراکتر و حداکثر دارای {1} کاراکتر باشد.", MinimumLength = 6)]
+        [DataType(DataType.Password), Display(Name = "کلمه عبور"), JsonIgnore]
+		public string Password { get; set; }
+
+		[DataType(DataType.Password), Display(Name = "تکرار کلمه عبور"), JsonIgnore]
+		[Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
+		[Compare("Password", ErrorMessage = "کلمه عبور وارد شده با تکرار کلمه عبور مطابقت ندارد.")]
+		public string ConfirmPassword { get; set; }
 
         [JsonIgnore, Display(Name = "تصویر پروفایل")]
         [Required(ErrorMessage = "انتخاب {0} الزامی است.")]

@@ -13,11 +13,12 @@ namespace AccountManagement.Application.Contrast.Role
     {
 
 
-        [Display(Name = "عنوان نقش"), JsonPropertyName("عنوان نقش")]
+        [Display(Name = "عنوان نقش")]
         [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
+       
         public string Name { get; set; }
 
-        [Display(Name = "توضیحات"), JsonPropertyName("توضیحات")]
+        [Display(Name = "توضیحات")]
         [Required(ErrorMessage = "وارد نمودن {0} الزامی است.")]
         public string Description { get; set; }
 

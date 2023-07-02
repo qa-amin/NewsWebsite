@@ -63,6 +63,10 @@
     //    return html.join('')
     //}
 
+        function checkBoxFormat(value, row) {
+            return '<input type="checkbox" name="btSelectItem" value="' + row.Id + '" />';
+        }
+
     function operateFormatter(value, row, index) {
         return [
             '<button type="button" class="btn-link text-success" data-toggle="ajax-modal" data-url=@Url.Action("Edit", "Category")?Id=' + row.Id + ' title="ویرایش">',
@@ -97,6 +101,7 @@
                     rowspan: 2,
                     align: 'center',
                     valign: 'middle',
+                    formatter: checkBoxFormat
 
                 }, {
                     title: 'ردیف',
