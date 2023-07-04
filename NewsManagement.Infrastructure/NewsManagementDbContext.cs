@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NewsManagement.Domain.TagAgg;
+using NewsManagement.Domain.VideoAgg;
 using NewsManagement.Infrastructure.EFCore.Mapping;
 using NewsWebsite.Entities;
 
@@ -14,6 +15,7 @@ namespace NewsManagement.Infrastructure.EFCore
 	{
 		public DbSet<NewsCategory> NewsCategories { get; set; }
 		public DbSet<Tag> Tags { get; set; }
+		public DbSet<Video> Videos { get; set; }
 
 		public NewsManagementDbContext(DbContextOptions<NewsManagementDbContext> options) : base(options)
 		{
@@ -24,6 +26,7 @@ namespace NewsManagement.Infrastructure.EFCore
 			base.OnModelCreating(modelBuilder);
 			modelBuilder.ApplyConfiguration(new NewsCategoryMapping());
             modelBuilder.ApplyConfiguration(new TagMapping());
+            modelBuilder.ApplyConfiguration(new VideoMapping());
         }
 	}
 }

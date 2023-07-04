@@ -1,4 +1,9 @@
-﻿<ul class="navbar-nav">
+﻿@using AccountManagement.Application.Contrast.User
+@inject IUserApplication UserApplication
+@{
+	var user = UserApplication.GetUser(User);
+}
+<ul class="navbar-nav">
     <li class="nav-item">
         <security-trimming asp-action="Index" asp-controller="Dashboard" asp-area="Admin">
             <a class="nav-link" asp-action="Index" asp-controller="Dashboard">
@@ -82,9 +87,9 @@
             <i class="ni ni-settings-gear-65 text-info"></i>  احراز هویت دو مرحله ای
         </a>
     </li>*@
-    @*<li class="nav-item">
-        <a class="nav-link" asp-action="Profile" asp-controller="Manage" asp-route-userId="@User.Identity.GetUserId()">
+    <li class="nav-item">
+        <a class="nav-link" asp-action="Profile" asp-controller="Manage" asp-route-Id="@user.Id">
             <i class="ni ni-circle-08 text-pink"></i> نمایه من
         </a>
-    </li>*@
+    </li>
 </ul>
