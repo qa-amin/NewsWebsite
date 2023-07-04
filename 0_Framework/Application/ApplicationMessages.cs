@@ -23,6 +23,8 @@ namespace _0_Framework.Application
         public const string UserLogin = "ورود با موفقیت انجام شد";
         public const string ChangPass = "کلمه عبور با موفقیت تغییر کرد";
         public const string InActive = "حساب کاربری شما غیر فعال است";
+        public const string TagAdded = "ثبت برچسب جدید با موفقیت انجام شد";
+        public const string TagEdited = "ویرایش برچسب با موفقیت انجام شد";
         public const string LockAccount = "حساب کاربری شما به مدت 20 دقیقه به دلیل تلاش های ناموفق قفل شد.";
 
     }
