@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 using _0_Framework.Application;
@@ -140,6 +141,17 @@ namespace NewsManagement.Application
         private List<long> getNewsTagsId(string tags)
         {
             var tagArray = tags.Split(",");
+            var listTags = _tagRepository.Get();
+            foreach (var item in tagArray)
+            {
+                if (listTags.All(p => p.TagName != item))
+                {
+                    var tag = new Tag(item);
+                    _tagRepository.Create(tag);
+                    _tagRepository.SaveChanges();
+                }
+                
+            }
             var allTags = _tagRepository.Get().Where(p => tags.Contains(p.TagName)).Select(p => p.Id).ToList();
 
             return allTags;
