@@ -61,5 +61,11 @@ namespace NewsManagement.Domain.NewsAgg
             this.Abstract = Abstract;
             UpdateDate = DateTime.Now;
         }
+
+        public void Delete()
+        {
+            IsRemove = true;
+            RemoveDate = DateTime.Now;
+        }
     }
 }

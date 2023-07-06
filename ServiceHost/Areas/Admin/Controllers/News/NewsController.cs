@@ -2,6 +2,7 @@
 using NewsManagement.Application.Contrasts.News;
 using NewsManagement.Application.Contrasts.NewsCategory;
 using NewsManagement.Application.Contrasts.Tag;
+using NewsManagement.Application.Contrasts.Video;
 using Newtonsoft.Json;
 
 namespace ServiceHost.Areas.Admin.Controllers.News
@@ -87,6 +88,28 @@ namespace ServiceHost.Areas.Admin.Controllers.News
             var createNews = new CreateNews();
             createNews.NewsNewsCategoryViewModel = new NewsNewsCategoryViewModel(_newsCategoryApplication.GetAllCategories(), null);
             return View(createNews);
+
+
+        }
+
+
+        [Area("Admin")]
+        [Route("admin/news/Delete")]
+        [HttpGet]
+        public IActionResult Delete(long id)
+        {
+            var video = _newsApplication.GetDetails(id);
+            return PartialView("_Delete", video);
+        }
+        [Area("Admin")]
+        [Route("admin/news/Delete")]
+        [HttpPost]
+        public void Delete(EditVideo command)
+        {
+
+            var result = _newsApplication.Delete(command.Id);
+            TempData["ShowMassage"] = JsonConvert.SerializeObject(result);
+
 
 
         }

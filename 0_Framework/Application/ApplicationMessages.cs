@@ -28,6 +28,7 @@ namespace _0_Framework.Application
         public const string videoAded = "ثبت ویدیو جدید با موفقیت انجام شد";
         public const string VideoEdited = "ویرایش ویدیو با موفقیت انجام شد";
         public const string DeleteVideo = "حذف ویدیو با موفقیت انجام شد";
+        public const string DeleteNews = "حذف خبر با موفقیت انجام شد";
         public const string LockAccount = "حساب کاربری شما به مدت 20 دقیقه به دلیل تلاش های ناموفق قفل شد.";
 
     }

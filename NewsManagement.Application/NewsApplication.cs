@@ -103,9 +103,38 @@ namespace NewsManagement.Application
             return operation.Succeeded();
         }
 
+        public OperationResult Delete(long id)
+        {
+            var operation = new OperationResult();
+            var user = _newsRepository.Get(id);
+            if (user == null)
+            {
+                return operation.Failed(ApplicationMessages.RecordNotFound);
+            }
+
+            user.Delete();
+            _newsRepository.SaveChanges();
+            return operation.Succeeded(ApplicationMessages.DeleteNews);
+        }
+
         public (List<NewsViewModel>, long) Search(NewsSearchModel searchModel)
         {
             return _newsRepository.Search(searchModel);
+        }
+
+        public EditNews GetDetails(long id)
+        {
+            var news = _newsRepository.Get(id);
+            return new EditNews()
+            {
+                IsInternal = news.IsInternal,
+                Title = news.Title,
+                Description = news.Description,
+                Abstract = news.Abstract,
+                Id = news.Id,
+                UserId = news.UserId,
+
+            };
         }
 
         private List<long> getNewsTagsId(string tags)
