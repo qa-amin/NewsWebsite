@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NewsManagement.Application;
+using NewsManagement.Application.Contrasts.News;
 using NewsManagement.Application.Contrasts.NewsCategory;
 using NewsManagement.Application.Contrasts.Tag;
 using NewsManagement.Application.Contrasts.Video;
+using NewsManagement.Domain.NewsAgg;
 using NewsManagement.Domain.NewsCategoryAgg;
 using NewsManagement.Domain.TagAgg;
 using NewsManagement.Domain.VideoAgg;
@@ -28,6 +30,8 @@ namespace NewsManagement.Infrastructure.Configuration
             services.AddTransient<IVideoRepository, VideoRepository>();
             services.AddTransient<IVideoApplication, VideoApplication>();
 
+            services.AddTransient<INewsRepository, NewsRepository>();
+            services.AddTransient<INewsApplication, NewsApplication>();
 
         }
 	}

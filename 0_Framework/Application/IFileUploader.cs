@@ -10,5 +10,6 @@ namespace _0_Framework.Application
     public interface IFileUploader
     {
         string Upload(IFormFile file, string path);
+        string UploadFileBase64(string base64, string imageName, string path);
     }
 }

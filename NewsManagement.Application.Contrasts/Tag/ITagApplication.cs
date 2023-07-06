@@ -17,5 +17,8 @@ namespace NewsManagement.Application.Contrasts.Tag
         (List<TagViewModel>, int) Search(TagSearchModel searchModel);
 
         EditTag GetDetails(long id);
+
+
+        List<TagViewModel> GetAllTags();
     }
 }

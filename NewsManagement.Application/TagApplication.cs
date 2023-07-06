@@ -86,5 +86,15 @@ namespace NewsManagement.Application
 
             return editTag;
         }
+
+        public List<TagViewModel> GetAllTags()
+        {
+           var allTags = _tagRepository.Get().Select(p => new TagViewModel
+           {
+               TagName = p.TagName
+           }).ToList();
+
+           return allTags;
+        }
     }
 }

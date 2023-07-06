@@ -44,7 +44,9 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
 				.Select(p => new NewsCategoryTreeViewModel
 				{
 					id = p.Id,
-					title = p.CategoryName
+					title = p.CategoryName,
+					Url = p.Url
+					
 				}).ToList();
 
 			foreach (var item in categories)
@@ -141,9 +143,10 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
 				.Select( p => new NewsCategoryTreeViewModel
 				{
 					id = p.Id,
-					title = p.CategoryName
+					title = p.CategoryName,
+					Url = p.Url
 
-				}).ToList();
+                }).ToList();
 
 			foreach (var item in subCategories)
 			{

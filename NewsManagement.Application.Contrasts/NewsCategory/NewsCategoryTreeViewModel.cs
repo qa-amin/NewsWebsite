@@ -14,6 +14,7 @@ namespace NewsManagement.Application.Contrasts.NewsCategory
 		}
 		public int id { get; set; }
 		public string title { get; set; }
+		public string Url { get; set; }
 		public List<NewsCategoryTreeViewModel> subs { get; set; }
 	}
 }

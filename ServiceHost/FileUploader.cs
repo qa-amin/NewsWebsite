@@ -26,6 +26,18 @@ namespace ServiceHost
             file.CopyTo(output);
             return $"{path}/{fileName}";
         }
+        public  string UploadFileBase64( string base64,string imageName, string path)
+        {
+            var directoryPath = $"{_webHostEnvironment.WebRootPath}//ProjectPictures//{path}";
+            if (!Directory.Exists(directoryPath))
+                Directory.CreateDirectory(directoryPath);
+
+            var filePath = $"{directoryPath}//{imageName}";
+
+            byte[] bytes = Convert.FromBase64String(base64);
+            File.WriteAllBytes(filePath, bytes);
+            return $"{path}/{imageName}";
+        }
 
     }
 }

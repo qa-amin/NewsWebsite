@@ -22,6 +22,95 @@ namespace NewsManagement.Infrastructure.EFCore.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("NewsManagement.Domain.NewsAgg.News", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("Abstract")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsInternal")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPublish")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRemove")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("PublishDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("RemoveDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("News");
+                });
+
+            modelBuilder.Entity("NewsManagement.Domain.NewsNewsCategoryAgg.NewsNewsCategory", b =>
+                {
+                    b.Property<int>("NewsCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<long>("NewsId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("NewsCategoryId", "NewsId");
+
+                    b.HasIndex("NewsId");
+
+                    b.ToTable("NewsNewsCategories");
+                });
+
+            modelBuilder.Entity("NewsManagement.Domain.NewsTagAgg.NewsTag", b =>
+                {
+                    b.Property<long>("TagId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("NewsId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("TagId", "NewsId");
+
+                    b.HasIndex("NewsId");
+
+                    b.ToTable("NewsTags");
+                });
+
             modelBuilder.Entity("NewsManagement.Domain.TagAgg.Tag", b =>
                 {
                     b.Property<long>("Id")
@@ -130,6 +219,44 @@ namespace NewsManagement.Infrastructure.EFCore.Migrations
                     b.ToTable("NewsCategories");
                 });
 
+            modelBuilder.Entity("NewsManagement.Domain.NewsNewsCategoryAgg.NewsNewsCategory", b =>
+                {
+                    b.HasOne("NewsWebsite.Entities.NewsCategory", "NewsCategory")
+                        .WithMany("NewsNewsCategories")
+                        .HasForeignKey("NewsCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NewsManagement.Domain.NewsAgg.News", "News")
+                        .WithMany("NewsNewsCategories")
+                        .HasForeignKey("NewsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("News");
+
+                    b.Navigation("NewsCategory");
+                });
+
+            modelBuilder.Entity("NewsManagement.Domain.NewsTagAgg.NewsTag", b =>
+                {
+                    b.HasOne("NewsManagement.Domain.NewsAgg.News", "News")
+                        .WithMany("NewsTags")
+                        .HasForeignKey("NewsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NewsManagement.Domain.TagAgg.Tag", "Tag")
+                        .WithMany("NewsTags")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("News");
+
+                    b.Navigation("Tag");
+                });
+
             modelBuilder.Entity("NewsWebsite.Entities.NewsCategory", b =>
                 {
                     b.HasOne("NewsWebsite.Entities.NewsCategory", "category")
@@ -139,9 +266,23 @@ namespace NewsManagement.Infrastructure.EFCore.Migrations
                     b.Navigation("category");
                 });
 
+            modelBuilder.Entity("NewsManagement.Domain.NewsAgg.News", b =>
+                {
+                    b.Navigation("NewsNewsCategories");
+
+                    b.Navigation("NewsTags");
+                });
+
+            modelBuilder.Entity("NewsManagement.Domain.TagAgg.Tag", b =>
+                {
+                    b.Navigation("NewsTags");
+                });
+
             modelBuilder.Entity("NewsWebsite.Entities.NewsCategory", b =>
                 {
                     b.Navigation("Categories");
+
+                    b.Navigation("NewsNewsCategories");
                 });
 #pragma warning restore 612, 618
         }

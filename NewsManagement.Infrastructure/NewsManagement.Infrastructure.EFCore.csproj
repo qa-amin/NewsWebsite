@@ -23,6 +23,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\0_Framework\0_Framework.csproj" />
+    <ProjectReference Include="..\AccountManagement.Infrasturcture.EFCore\AccountManagement.Infrastructure.EFCore.csproj" />
+    
     <ProjectReference Include="..\NewsManagement.Domain\NewsManagement.Domain.csproj" />
   </ItemGroup>
 

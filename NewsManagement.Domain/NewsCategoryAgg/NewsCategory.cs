@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using _0_Framework.Domain;
+using NewsManagement.Domain.NewsNewsCategoryAgg;
 
 namespace NewsWebsite.Entities
 {
@@ -18,6 +19,8 @@ namespace NewsWebsite.Entities
 		public virtual NewsCategory category { get; private set; }
 
 		public virtual List<NewsCategory> Categories { get; private set; }
+
+        public ICollection<NewsNewsCategory> NewsNewsCategories { get; set; }
 
         public NewsCategory(string categoryName, string url, int? parentCategoryId)
         {

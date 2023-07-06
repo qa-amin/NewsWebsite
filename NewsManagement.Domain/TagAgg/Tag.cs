@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using _0_Framework.Domain;
+using NewsManagement.Domain.NewsTagAgg;
 
 namespace NewsManagement.Domain.TagAgg
 {
@@ -11,6 +12,8 @@ namespace NewsManagement.Domain.TagAgg
     {
        
         public string TagName { get; private set; }
+
+        public virtual ICollection<NewsTag> NewsTags { get; set; }
 
         public Tag(string tagName)
         {
