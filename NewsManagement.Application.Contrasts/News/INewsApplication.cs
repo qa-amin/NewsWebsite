@@ -10,8 +10,17 @@ namespace NewsManagement.Application.Contrasts.News
     public interface INewsApplication
     {
         OperationResult Create(CreateNews command );
+        OperationResult Edit(EditNews command );
         OperationResult Delete(long id  );
         (List<NewsViewModel>, long) Search(NewsSearchModel searchModel);
         EditNews GetDetails(long id);
+
+        long[] CategoryIds(long newsId);
+
+        string GetTagNames(long NewsId);
+
+        void RemoveNewsTagRecords(long newsId);
+        void RemoveNewsNewsCategoryRecords(long newsId);
+
     }
 }

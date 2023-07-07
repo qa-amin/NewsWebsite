@@ -49,20 +49,26 @@ namespace NewsManagement.Domain.NewsAgg
             NewsTags = tags;
         }
 
-        public void Edit(string title, string description, DateTime? publishDateTime, long userId, string imageName, bool isPublish, bool isInternal, string Abstract)
-        {
-            Title = title;
-            Description = description;
-            PublishDateTime = publishDateTime;
-            UserId = userId;
-            ImageName = imageName;
-            IsPublish = isPublish;
-            IsInternal = isInternal;
-            this.Abstract = Abstract;
+		public void Edit(string title, string description, DateTime? publishDateTime, long userId,
+			string url, string imageName, bool isPublish, bool isInternal,
+			string Abstract, List<NewsNewsCategory> categories,
+			List<NewsTag> tags)
+		{
+			Title = title;
+			Description = description;
+			PublishDateTime = publishDateTime;
+			UserId = userId;
+			Url = url;
+			ImageName = imageName;
+			IsPublish = isPublish;
+			IsInternal = isInternal;
+			this.Abstract = Abstract;
+			NewsNewsCategories = categories;
+			NewsTags = tags;
             UpdateDate = DateTime.Now;
-        }
+		}
 
-        public void Delete()
+		public void Delete()
         {
             IsRemove = true;
             RemoveDate = DateTime.Now;

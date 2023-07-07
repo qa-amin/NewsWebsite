@@ -106,6 +106,11 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
 
         }
 
+        public void Update(News Enitiy)
+        {
+	        _context.Update(Enitiy);
+        }
+
         private List<NewsViewModel> GetPaginateNews(int offset, int limit, string orderBy, string searchText,
             bool? isPublish, bool? isInternal)
         {

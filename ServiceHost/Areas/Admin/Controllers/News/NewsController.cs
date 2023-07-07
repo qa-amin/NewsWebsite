@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NewsManagement.Application.Contrasts.News;
 using NewsManagement.Application.Contrasts.NewsCategory;
 using NewsManagement.Application.Contrasts.Tag;
@@ -91,9 +92,54 @@ namespace ServiceHost.Areas.Admin.Controllers.News
 
 
         }
+        [Area("Admin")]
+        [Route("admin/news/Edit")]
+        [HttpGet]
+        public IActionResult Edit(long id)
+        {
+	        ViewBag.Tags = _tagApplication.GetAllTags().Select(p => p.TagName).ToList();
+	        var news = _newsApplication.GetDetails(id);
+	        news.NewsNewsCategoryViewModel =
+		        new NewsNewsCategoryViewModel(_newsCategoryApplication.GetAllCategories(), _newsApplication.CategoryIds(news.Id));
 
+            news.NameOfTags = _newsApplication.GetTagNames(news.Id);
+			return View(news);
+        }
 
         [Area("Admin")]
+        [Route("admin/news/Edit")]
+        [HttpPost]
+        public IActionResult Edit(EditNews command)
+        {
+	        
+	        ModelState.Remove("ImageFile");
+	        ModelState.Remove("NewsNewsCategoryViewModel");
+	        ModelState.Remove("PublishDateTime");
+	        ModelState.Remove("PersianPublishTime");
+	        ModelState.Remove("PersianPublishDate");
+
+			if (ModelState.IsValid)
+	        {
+		        var result = _newsApplication.Edit(command);
+		        if (result.IsSucceeded)
+		        {
+			       return RedirectToAction("Index", "News");
+		        }
+		        else
+		        {
+                    ModelState.AddModelError(string.Empty,result.Message);
+		        }
+	        }
+
+	        ViewBag.Tags = _tagApplication.GetAllTags().Select(p => p.TagName).ToList();
+	       command.NewsNewsCategoryViewModel= new NewsNewsCategoryViewModel(_newsCategoryApplication.GetAllCategories(), _newsApplication.CategoryIds(command.Id));
+	       command.NameOfTags = _newsApplication.GetTagNames(command.Id);
+			return View(command);
+
+		}
+
+
+		[Area("Admin")]
         [Route("admin/news/Delete")]
         [HttpGet]
         public IActionResult Delete(long id)
@@ -113,5 +159,7 @@ namespace ServiceHost.Areas.Admin.Controllers.News
 
 
         }
+
+
     }
 }

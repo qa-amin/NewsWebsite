@@ -12,5 +12,7 @@ namespace NewsManagement.Domain.NewsAgg
     public interface INewsRepository : IRepository<long, News>
     {
         (List<NewsViewModel>, int) Search(NewsSearchModel searchModel);
+
+        void Update(News Enitiy);
     }
 }

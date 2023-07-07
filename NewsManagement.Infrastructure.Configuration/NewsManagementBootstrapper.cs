@@ -7,6 +7,8 @@ using NewsManagement.Application.Contrasts.Tag;
 using NewsManagement.Application.Contrasts.Video;
 using NewsManagement.Domain.NewsAgg;
 using NewsManagement.Domain.NewsCategoryAgg;
+using NewsManagement.Domain.NewsNewsCategoryAgg;
+using NewsManagement.Domain.NewsTagAgg;
 using NewsManagement.Domain.TagAgg;
 using NewsManagement.Domain.VideoAgg;
 using NewsManagement.Infrastructure.EFCore;
@@ -33,6 +35,10 @@ namespace NewsManagement.Infrastructure.Configuration
             services.AddTransient<INewsRepository, NewsRepository>();
             services.AddTransient<INewsApplication, NewsApplication>();
 
-        }
+
+            services.AddTransient<INewsNewsCategoryRepository, NewsNewsCategoryRepository>();
+            services.AddTransient<INewsTagRepository, NewsTagRepository>();
+
+		}
 	}
 }

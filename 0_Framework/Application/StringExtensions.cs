@@ -105,5 +105,18 @@
         {
             return Guid.NewGuid().ToString("N").Substring(0, numOfCharacter);
         }
-    }
+
+        public static string CombineWith(this string[] array, char character)
+        {
+	        string newString = "";
+	        foreach (var item in array)
+	        {
+		        if (newString == "")
+			        newString = item;
+		        else
+			        newString = newString + character + item;
+	        }
+	        return newString;
+        }
+	}
 }
