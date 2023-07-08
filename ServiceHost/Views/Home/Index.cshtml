@@ -1,5 +1,6 @@
 ﻿@using NewsWebsite.Common
 @using _1_NewsManagementQuery.Contracts.NewsPaginate
+@using NewsManagement.Application.Contrasts.NewsLetter
 @model _1_NewsManagementQuery.Contracts.HomePageViewModel.HomePageQueryModel
 @{
     ViewData["Title"] = "صفحه اصلی";
@@ -224,7 +225,7 @@
                     }*@
 
                     <!-- ***** Newsletter ***** -->
-                    @*@await Html.PartialAsync("_RegisterInNewsletter")*@
+                    @await Html.PartialAsync("_RegisterInNewsletter", new CreateNewsLetter())
 
 
                     <!-- ***** Single Widget ***** -->
