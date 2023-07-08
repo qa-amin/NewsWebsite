@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\1_NewsManagementQuery\1_NewsManagementQuery.csproj" />
     <ProjectReference Include="..\NewsManagement.Application\NewsManagement.Application.csproj" />
     <ProjectReference Include="..\NewsManagement.Infrastructure\NewsManagement.Infrastructure.EFCore.csproj" />
   </ItemGroup>

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>_1_NewsManagementQuery</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NewsManagement.Application.Contrasts\NewsManagement.Application.Contrasts.csproj" />
+    <ProjectReference Include="..\NewsManagement.Domain\NewsManagement.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

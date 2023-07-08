@@ -1,21 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceHost.Models;
 using System.Diagnostics;
+using _1_NewsManagementQuery.Contracts.HomePage;
 
 namespace ServiceHost.Controllers
 {
 	public class HomeController : Controller
-	{
-		private readonly ILogger<HomeController> _logger;
+    {
+        private readonly IHomePageQuery _homePageQuery;
 
-		public HomeController(ILogger<HomeController> logger)
-		{
-			_logger = logger;
-		}
+        public HomeController(IHomePageQuery homePageQuery)
+        {
+            _homePageQuery = homePageQuery;
+        }
 
+        [Route("home/index")]
 		public IActionResult Index()
-		{
-			return View();
+        {
+            var homePageQueryModel = _homePageQuery.GetNews();
+			return View(homePageQueryModel);
 		}
 
 		public IActionResult Privacy()

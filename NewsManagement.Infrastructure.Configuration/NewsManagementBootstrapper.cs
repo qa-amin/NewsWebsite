@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using _1_NewsManagementQuery.Contracts.HomePage;
+using _1_NewsManagementQuery.Query;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NewsManagement.Application;
 using NewsManagement.Application.Contrasts.News;
@@ -39,6 +41,9 @@ namespace NewsManagement.Infrastructure.Configuration
             services.AddTransient<INewsNewsCategoryRepository, NewsNewsCategoryRepository>();
             services.AddTransient<INewsTagRepository, NewsTagRepository>();
 
-		}
+
+            services.AddTransient<IHomePageQuery, HomePageQuery>();
+
+        }
 	}
 }

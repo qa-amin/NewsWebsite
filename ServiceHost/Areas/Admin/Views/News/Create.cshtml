@@ -1,4 +1,6 @@
 ﻿@using AccountManagement.Application.Contrast.User
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using _0_Framework.Application
 @model NewsManagement.Application.Contrasts.News.CreateNews
 @inject IUserApplication UserApplication
 @{
@@ -249,7 +251,10 @@
 						        <div class="card-body">
 							        <label class="cabinet center-block">
 								        <span>
-
+									        @if (Model.ImageName.HasValue())
+									        {
+										        <img src="~/ProjectPictures/@Model.ImageName" class="gambar img-responsive img-thumbnail" id="item-img-output" height="50" />
+									        }
 									        <input type="hidden" asp-for="ImageFile" id="base64"/>
 									        <a class="btn btn-success btn-sm btn-block mt-2 text-white">
 										        <span><i class="fa fa-camera"></i></span> انتخاب کنید ...

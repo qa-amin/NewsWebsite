@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\1_NewsManagementQuery\1_NewsManagementQuery.csproj" />
     <ProjectReference Include="..\AccountManagement.Infrastructure.EFCore\AccountManagement.Infrastructure.Configuration.csproj" />
     <ProjectReference Include="..\AccountManagemetn.Application.Contrast\AccountManagement.Application.Contrast.csproj" />
     <ProjectReference Include="..\NewsManagement.Infrastructure.Configuration\NewsManagement.Infrastructure.Configuration.csproj" />

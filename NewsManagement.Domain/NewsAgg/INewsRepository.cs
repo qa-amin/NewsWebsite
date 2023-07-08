@@ -14,5 +14,10 @@ namespace NewsManagement.Domain.NewsAgg
         (List<NewsViewModel>, int) Search(NewsSearchModel searchModel);
 
         void Update(News Enitiy);
+
+        List<NewsViewModel> GetPaginateNews(int offset, int limit, string orderBy, string searchText,
+            bool? isPublish, bool? isInternal);
+
+        long CountNewsPublished();
     }
 }

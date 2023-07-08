@@ -13,5 +13,6 @@ namespace NewsManagement.Domain.VideoAgg
         (List<VideoViewModel>, int) Search(VideoSearchModel searchModel);
 
         EditVideo GetDetail(long id);
+        List<VideoViewModel> GetPaginateVideos(int offset, int limit, string orderBy, string searchText);
     }
 }

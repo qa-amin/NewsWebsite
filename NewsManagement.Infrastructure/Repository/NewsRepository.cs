@@ -111,7 +111,7 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
 	        _context.Update(Enitiy);
         }
 
-        private List<NewsViewModel> GetPaginateNews(int offset, int limit, string orderBy, string searchText,
+        public List<NewsViewModel> GetPaginateNews(int offset, int limit, string orderBy, string searchText,
             bool? isPublish, bool? isInternal)
         {
             var listTags = _context.Tags.ToList();
@@ -165,6 +165,12 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
                 item.Row = ++offset;
 
             return news;
+        }
+
+        public long CountNewsPublished()
+        {
+            var numOfPublishedNews = _context.News.Where(p => p.IsPublish).LongCount();
+            return numOfPublishedNews;
         }
 
         private static string GetUserName(long userId, List<User> users)
