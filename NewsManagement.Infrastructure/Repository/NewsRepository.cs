@@ -21,6 +21,8 @@ using System.Linq.Dynamic.Core;
 using NewsWebsite.Entities;
 using AccountManagement.Domain.UserAgg;
 using NewsManagement.Domain.CommentAgg;
+using NewsManagement.Domain.LikeAgg;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace NewsManagement.Infrastructure.EFCore.Repository
 {
@@ -119,6 +121,8 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
             var newsCategories = _context.NewsCategories.ToList();
             var users = _managementDbContext.Users.ToList();
             var comments = _context.Comments.ToList();
+            var likes = _context.Likes.ToList();
+
 
 
             var getDateTimesForSearch = searchText.GetDateTimeForSearch();
@@ -152,8 +156,8 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
                     Status = p.IsPublish == false ? "پیش نویس" : ( p.PublishDateTime <= DateTime.Now ? "منتشر" : "انتشار در آینده") ,
                     PersianPublishDate = p.PublishDateTime.ConvertMiladiToShamsi("yyyy/MM/dd ساعت HH:mm"),
                     //NumberOfVisit = p.NumberOfVisit,
-                    //NumberOfLike = p.NumberOfLike,
-                    //NumberOfDisLike = p.NumberOfDisLike,
+                    NumberOfLike = GetNumberOfLike(p.Id,likes),
+                    NumberOfDisLike = GetNumberOfDisLike(p.Id, likes),
                     NumberOfComments = GetNumberOfComments(p.Id, comments),
 
 
@@ -164,6 +168,19 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
                 item.Row = ++offset;
 
             return news;
+        }
+
+        private static int GetNumberOfDisLike(long newsId, List<Like> likes)
+        {
+			var numberOfDisLike = likes.Where(p => p.NewsId == newsId && !p.IsLiked).Count();
+			return numberOfDisLike;
+		}
+
+        private static int GetNumberOfLike(long newsId, List<Like> likes)
+        {
+	        var numberOfLike = likes.Where(p => p.NewsId == newsId && p.IsLiked).Count();
+            return numberOfLike;
+
         }
 
         private static int GetNumberOfComments(long NewsId, List<Comment> comments)
