@@ -28,6 +28,10 @@ namespace NewsManagement.Infrastructure.EFCore.Mapping
 	            .WithOne(p => p.News)
 	            .HasForeignKey(p => p.NewsId);
 
+            builder.HasMany(p => p.Visits)
+	            .WithOne(p => p.News)
+	            .HasForeignKey(p => p.NewsId);
+
         }
     }
 }

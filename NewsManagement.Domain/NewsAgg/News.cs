@@ -8,6 +8,7 @@ using NewsManagement.Domain.CommentAgg;
 using NewsManagement.Domain.LikeAgg;
 using NewsManagement.Domain.NewsNewsCategoryAgg;
 using NewsManagement.Domain.NewsTagAgg;
+using NewsManagement.Domain.VisitAgg;
 using NewsWebsite.Entities;
 
 namespace NewsManagement.Domain.NewsAgg
@@ -30,6 +31,8 @@ namespace NewsManagement.Domain.NewsAgg
 
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Like> Likes { get; set; }
+
+        public virtual ICollection<Visit> Visits { get; set; }
 
         public News()
         {

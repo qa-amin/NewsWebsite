@@ -12,6 +12,7 @@ using NewsManagement.Domain.NewsNewsCategoryAgg;
 using NewsManagement.Domain.NewsTagAgg;
 using NewsManagement.Domain.TagAgg;
 using NewsManagement.Domain.VideoAgg;
+using NewsManagement.Domain.VisitAgg;
 using NewsManagement.Infrastructure.EFCore.Mapping;
 using NewsWebsite.Entities;
 
@@ -28,6 +29,7 @@ namespace NewsManagement.Infrastructure.EFCore
 		public DbSet<NewsLetter> NewsLetters { get; set; }
 		public DbSet<Comment> Comments { get; set; }
 		public DbSet<Like> Likes { get; set; }
+		public DbSet<Visit> Visits {  get; set; }
 
 
         public NewsManagementDbContext(DbContextOptions<NewsManagementDbContext> options) : base(options)
@@ -46,6 +48,7 @@ namespace NewsManagement.Infrastructure.EFCore
             modelBuilder.ApplyConfiguration(new NewsLetterMapping());
 			modelBuilder.ApplyConfiguration(new CommentMapping());
 			modelBuilder.ApplyConfiguration(new LikeMapping());
+			modelBuilder.ApplyConfiguration(new VisitMapping());
 		}
 	}
 }
