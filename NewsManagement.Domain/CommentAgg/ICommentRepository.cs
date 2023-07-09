@@ -12,7 +12,9 @@ namespace NewsManagement.Domain.CommentAgg
 	{
 		(List<CommentViewModel>, int) Search(CommentSearchModel searchModel);
 
-		public List<CommentViewModel> GetPaginateComments(int offset, int limit, string orderBy, string searchText,
+		 List<CommentViewModel> GetPaginateComments(int offset, int limit, string orderBy, string searchText,
 			string newsId, bool? isConfirm);
+
+		List<Comment> findChildOfComments(long id);
 	}
 }

@@ -15,6 +15,7 @@ namespace NewsManagement.Infrastructure.EFCore.Mapping
 	{
 		public void Configure(EntityTypeBuilder<Comment> builder)
 		{
+			builder.HasQueryFilter(p => !p.IsRemove);
 			builder.HasKey(x => x.Id);
 			builder.Property(p => p.Name).HasMaxLength(500);
 

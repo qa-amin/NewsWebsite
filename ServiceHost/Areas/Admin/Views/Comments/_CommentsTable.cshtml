@@ -60,11 +60,11 @@
 
      function operateFormatter(value, row, index) {
         return [
-            '<button type="button" class="btn-link text-success" data-toggle="ajax-modal" data-url=@Url.Action("ConfirmOrInconfirm", "Comments")?commentId=' + row.Id + ' title="تایید / عدم تایید">',
+            '<button type="button" class="btn-link text-success" data-toggle="ajax-modal" data-url=@Url.Action("ConfirmOrInconfirm", "Comments")?Id=' + row.Id + ' title="تایید / عدم تایید">',
             '<i class="fa fa-check"></i>',
             '</button >',
 
-            '<button type="button" class="btn-link text-danger" data-toggle="ajax-modal" data-url=@Url.Action("Delete", "Comments")/?commentId=' + row.Id + ' title="حذف">',
+            '<button type="button" class="btn-link text-danger" data-toggle="ajax-modal" data-url=@Url.Action("Delete", "Comments")/?Id=' + row.Id + ' title="حذف">',
             '<i class="fa fa-trash"></i>',
             '</button >'
         ].join('')

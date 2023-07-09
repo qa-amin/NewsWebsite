@@ -29,6 +29,7 @@ namespace _0_Framework.Application
         public const string VideoEdited = "ویرایش ویدیو با موفقیت انجام شد";
         public const string DeleteVideo = "حذف ویدیو با موفقیت انجام شد";
         public const string DeleteNews = "حذف خبر با موفقیت انجام شد";
+        public const string DeleteComment = "حذف نظر با موفقیت انجام شد";
         public const string DeleteNewsLetter = "حذف از خبرنامه با موفقیت انجام شد";
         public const string EditedNews = "ویرایش خبر با موفقیت انجام شد";
         public const string RegisterSuccess = "عضویت شما در خبرنامه با موفقیت انجام شد"; 

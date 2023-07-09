@@ -11,5 +11,6 @@ namespace NewsManagement.Application.Contrasts.Comment
 	{
 		[JsonPropertyName("Id")]
 		public long Id { get; set; }
+		public bool IsConfirm { get; set; }
 	}
 }

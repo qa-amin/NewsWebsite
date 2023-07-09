@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NewsManagement.Application.Contrasts.Comment;
 using NewsManagement.Application.Contrasts.Tag;
+using Newtonsoft.Json;
 
 namespace ServiceHost.Areas.Admin.Controllers.Comment
 {
@@ -45,5 +46,51 @@ namespace ServiceHost.Areas.Admin.Controllers.Comment
 
 			return Json(new {total = total, rows = comments});
 		}
+
+		[Area("Admin")]
+		[Route("admin/comments/Delete")]
+		[HttpGet]
+		public IActionResult Delete(long id)
+		{
+			var comment = _commentApplication.GetDetails(id);
+
+			return PartialView("_Delete",comment);
+		}
+
+		[Area("Admin")]
+		[Route("admin/comments/Delete")]
+		[HttpPost]
+		public void Delete(EditComment command)
+		{
+			var result = _commentApplication.Delete(command);
+			TempData["ShowMassage"] = JsonConvert.SerializeObject(result);
+
+
+		}
+
+		[Area("Admin")]
+		[Route("admin/comments/ConfirmOrInconfirm")]
+		[HttpGet]
+		public IActionResult ConfirmOrInconfirm(long id)
+		{
+			var comment = _commentApplication.GetDetails(id);
+
+			return PartialView("_ConfirmOrInconfirm", comment);
+
+		}
+
+		[Area("Admin")]
+		[Route("admin/comments/ConfirmOrInconfirm")]
+		[HttpPost]
+		public void ConfirmOrInconfirm(EditComment command)
+		{
+			var result = _commentApplication.ConfirmOrInconfirm(command.Id);
+
+			TempData["ShowMassage"] = JsonConvert.SerializeObject(result);
+
+
+		}
+
+
 	}
 }

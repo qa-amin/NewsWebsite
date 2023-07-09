@@ -35,5 +35,23 @@ namespace NewsManagement.Domain.CommentAgg
 
 			PostageDateTime = DateTime.Now;
 		}
+
+
+		public void Delete()
+		{
+			IsRemove = true;
+			RemoveDate = DateTime.Now;
+		}
+
+		public void Active()
+		{
+			IsConfirm = true;
+			UpdateDate = DateTime.Now;
+		}
+		public void InActive()
+		{
+			IsConfirm = false;
+			UpdateDate = DateTime.Now;
+		}
 	}
 }

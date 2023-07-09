@@ -94,5 +94,10 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
 
 			return comments;
 		}
+
+		public List<Comment> findChildOfComments(long id)
+		{
+			return _context.Comments.Where(p => p.ParentCommentId == id).ToList();
+		}
 	}
 }
