@@ -20,6 +20,7 @@ using NewsWebsite.Common;
 using System.Linq.Dynamic.Core;
 using NewsWebsite.Entities;
 using AccountManagement.Domain.UserAgg;
+using NewsManagement.Domain.CommentAgg;
 
 namespace NewsManagement.Infrastructure.EFCore.Repository
 {
@@ -117,6 +118,7 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
             var listTags = _context.Tags.ToList();
             var newsCategories = _context.NewsCategories.ToList();
             var users = _managementDbContext.Users.ToList();
+            var comments = _context.Comments.ToList();
 
 
             var getDateTimesForSearch = searchText.GetDateTimeForSearch();
@@ -148,23 +150,26 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
                     NameOfTags = GetTagsName(p.NewsTags, p.Id, listTags),
                     NewsType = p.IsInternal ? "داخلی" : "خارجی",
                     Status = p.IsPublish == false ? "پیش نویس" : ( p.PublishDateTime <= DateTime.Now ? "منتشر" : "انتشار در آینده") ,
-                    PersianPublishDate = p.PublishDateTime.ConvertMiladiToShamsi("yyyy/MM/dd ساعت HH:mm")
+                    PersianPublishDate = p.PublishDateTime.ConvertMiladiToShamsi("yyyy/MM/dd ساعت HH:mm"),
                     //NumberOfVisit = p.NumberOfVisit,
                     //NumberOfLike = p.NumberOfLike,
                     //NumberOfDisLike = p.NumberOfDisLike,
-                    //NumberOfComments = p.NumberOfComments,
+                    NumberOfComments = GetNumberOfComments(p.Id, comments),
 
 
 
-
-                    //NameOfCategories = cog != null ? cog.CategoryName : "",
-                    //NameOfTags = tog != null ? tog.TagName : "",
                 }).ToList();
 
             foreach (var item in news)
                 item.Row = ++offset;
 
             return news;
+        }
+
+        private static int GetNumberOfComments(long NewsId, List<Comment> comments)
+        {
+	        var numberOfComments = comments.Where(p => p.NewsId == NewsId).Count();
+            return numberOfComments;
         }
 
         public long CountNewsPublished()
