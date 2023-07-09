@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using NewsManagement.Domain.BookMarkAgg;
 using NewsManagement.Domain.CommentAgg;
 using NewsManagement.Domain.LikeAgg;
 using NewsManagement.Domain.NewsAgg;
@@ -30,6 +31,7 @@ namespace NewsManagement.Infrastructure.EFCore
 		public DbSet<Comment> Comments { get; set; }
 		public DbSet<Like> Likes { get; set; }
 		public DbSet<Visit> Visits {  get; set; }
+		public DbSet<BookMark> BookMarks {  get; set; }
 
 
         public NewsManagementDbContext(DbContextOptions<NewsManagementDbContext> options) : base(options)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using _0_Framework.Domain;
+using NewsManagement.Domain.BookMarkAgg;
 using NewsManagement.Domain.CommentAgg;
 using NewsManagement.Domain.LikeAgg;
 using NewsManagement.Domain.NewsNewsCategoryAgg;
@@ -33,8 +34,9 @@ namespace NewsManagement.Domain.NewsAgg
         public virtual ICollection<Like> Likes { get; set; }
 
         public virtual ICollection<Visit> Visits { get; set; }
+        public virtual ICollection<BookMark> Bookmarks { get; set; }
 
-        public News()
+		public News()
         {
             
         }

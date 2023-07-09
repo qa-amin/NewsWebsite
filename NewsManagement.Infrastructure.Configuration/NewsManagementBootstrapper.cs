@@ -3,6 +3,7 @@ using _1_NewsManagementQuery.Query;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NewsManagement.Application;
+using NewsManagement.Application.Contrasts.BookMark;
 using NewsManagement.Application.Contrasts.Comment;
 using NewsManagement.Application.Contrasts.Like;
 using NewsManagement.Application.Contrasts.News;
@@ -10,6 +11,8 @@ using NewsManagement.Application.Contrasts.NewsCategory;
 using NewsManagement.Application.Contrasts.NewsLetter;
 using NewsManagement.Application.Contrasts.Tag;
 using NewsManagement.Application.Contrasts.Video;
+using NewsManagement.Application.Contrasts.Visit;
+using NewsManagement.Domain.BookMarkAgg;
 using NewsManagement.Domain.CommentAgg;
 using NewsManagement.Domain.LikeAgg;
 using NewsManagement.Domain.NewsAgg;
@@ -59,6 +62,10 @@ namespace NewsManagement.Infrastructure.Configuration
 
 
             services.AddTransient<IVisitRepository, VisitRepository>();
+            services.AddTransient<IVisitApplication, VisitApplication>();
+
+            services.AddTransient<IBookMarkRepository, BookMarkRepository>();
+            services.AddTransient<IBookMarkApplication, BookMarkApplication>();
 
 			services.AddTransient<IHomePageQuery, HomePageQuery>();
 
