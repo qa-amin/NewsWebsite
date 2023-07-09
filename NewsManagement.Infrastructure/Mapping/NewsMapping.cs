@@ -18,7 +18,12 @@ namespace NewsManagement.Infrastructure.EFCore.Mapping
 
             builder.Property(p => p.Title).HasMaxLength(500);
             builder.Property(p => p.Abstract).HasMaxLength(2000);
-            
+
+
+            builder.HasMany(p => p.Comments)
+	            .WithOne(p => p.News)
+	            .HasForeignKey(p => p.NewsId);
+
         }
     }
 }

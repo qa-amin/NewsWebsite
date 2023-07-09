@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NewsManagement.Infrastructure.EFCore;
 
@@ -11,9 +12,10 @@ using NewsManagement.Infrastructure.EFCore;
 namespace NewsManagement.Infrastructure.EFCore.Migrations
 {
     [DbContext(typeof(NewsManagementDbContext))]
-    partial class NewsManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230709001407_addComment")]
+    partial class addComment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,7 +57,7 @@ namespace NewsManagement.Infrastructure.EFCore.Migrations
                     b.Property<long>("NewsId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("ParentCommentId")
+                    b.Property<long>("ParentCommentId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime?>("PostageDateTime")
@@ -308,7 +310,9 @@ namespace NewsManagement.Infrastructure.EFCore.Migrations
 
                     b.HasOne("NewsManagement.Domain.CommentAgg.Comment", "comment")
                         .WithMany("comments")
-                        .HasForeignKey("ParentCommentId");
+                        .HasForeignKey("ParentCommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("News");
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using _0_Framework.Domain;
+using NewsManagement.Domain.CommentAgg;
 using NewsManagement.Domain.NewsNewsCategoryAgg;
 using NewsManagement.Domain.NewsTagAgg;
 using NewsWebsite.Entities;
@@ -25,6 +26,8 @@ namespace NewsManagement.Domain.NewsAgg
 
         public virtual ICollection<NewsTag> NewsTags { get; set; }
         public virtual ICollection<NewsNewsCategory> NewsNewsCategories { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; }
 
         public News()
         {
