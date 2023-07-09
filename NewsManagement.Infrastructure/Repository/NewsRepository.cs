@@ -23,6 +23,7 @@ using AccountManagement.Domain.UserAgg;
 using NewsManagement.Domain.CommentAgg;
 using NewsManagement.Domain.LikeAgg;
 using Microsoft.EntityFrameworkCore.Metadata;
+using NewsManagement.Domain.VisitAgg;
 
 namespace NewsManagement.Infrastructure.EFCore.Repository
 {
@@ -122,6 +123,7 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
             var users = _managementDbContext.Users.ToList();
             var comments = _context.Comments.ToList();
             var likes = _context.Likes.ToList();
+            var visits = _context.Visits.ToList();
 
 
 
@@ -155,7 +157,7 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
                     NewsType = p.IsInternal ? "داخلی" : "خارجی",
                     Status = p.IsPublish == false ? "پیش نویس" : ( p.PublishDateTime <= DateTime.Now ? "منتشر" : "انتشار در آینده") ,
                     PersianPublishDate = p.PublishDateTime.ConvertMiladiToShamsi("yyyy/MM/dd ساعت HH:mm"),
-                    //NumberOfVisit = p.NumberOfVisit,
+                    NumberOfVisit = GetNumberOfVisit(p.Id, visits),
                     NumberOfLike = GetNumberOfLike(p.Id,likes),
                     NumberOfDisLike = GetNumberOfDisLike(p.Id, likes),
                     NumberOfComments = GetNumberOfComments(p.Id, comments),
@@ -168,6 +170,14 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
                 item.Row = ++offset;
 
             return news;
+        }
+
+        private static int GetNumberOfVisit(long newsId, List<Visit> visits)
+        {
+	        var numberOfVisit = visits.Where(p => p.NewsId == newsId).Sum(p => p.NumberOfVisit);
+
+	        return numberOfVisit;
+
         }
 
         private static int GetNumberOfDisLike(long newsId, List<Like> likes)
