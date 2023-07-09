@@ -10,6 +10,7 @@ using NewsManagement.Application.Contrasts.NewsLetter;
 using NewsManagement.Application.Contrasts.Tag;
 using NewsManagement.Application.Contrasts.Video;
 using NewsManagement.Domain.CommentAgg;
+using NewsManagement.Domain.LikeAgg;
 using NewsManagement.Domain.NewsAgg;
 using NewsManagement.Domain.NewsCategoryAgg;
 using NewsManagement.Domain.NewsLetterAgg;
@@ -50,6 +51,8 @@ namespace NewsManagement.Infrastructure.Configuration
 
             services.AddTransient<ICommentRepository,CommentRepository>();
             services.AddTransient<ICommentApplication, CommentApplication>();
+
+            services.AddTransient<ILikeRepository, LikeRepository>();
 
 			services.AddTransient<IHomePageQuery, HomePageQuery>();
 
