@@ -9,6 +9,6 @@ namespace NewsManagement.Domain.VisitAgg
 {
 	public interface IVisitRepository : IRepository<long,Visit>
 	{
-
+		Visit GetVisit(long newsId, string ip);
 	}
 }

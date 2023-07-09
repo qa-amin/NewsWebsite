@@ -19,5 +19,21 @@ namespace NewsManagement.Domain.VisitAgg
 		public DateTime? UpdateDate { get; set; }
 		public DateTime? RemoveDate { get; set; }
 		public bool IsRemove { get; set; }
+
+		public Visit(long newsId, string ipAddress, DateTime lastVisitDateTime, int numberOfVisit)
+		{
+			NewsId = newsId;
+			IpAddress = ipAddress;
+			LastVisitDateTime = lastVisitDateTime;
+			NumberOfVisit = numberOfVisit;
+			CreationDate = DateTime.Now;
+		}
+
+		public void InCrease()
+		{
+			this.NumberOfVisit += 1;
+			this.LastVisitDateTime = DateTime.Now;
+			UpdateDate = DateTime.Now;
+		}
 	}
 }

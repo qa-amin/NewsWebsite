@@ -17,5 +17,10 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
 		{
 			_context = context;
 		}
+
+		public Visit GetVisit(long newsId, string ip)
+		{
+			return _context.Visits.FirstOrDefault(p => p.NewsId == newsId && p.IpAddress == ip);
+		}
 	}
 }
