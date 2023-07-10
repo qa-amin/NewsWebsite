@@ -18,6 +18,11 @@ namespace NewsManagement.Domain.NewsAgg
         List<NewsViewModel> GetPaginateNews(int offset, int limit, string orderBy, string searchText,
             bool? isPublish, bool? isInternal);
 
-        long CountNewsPublished();
+        List<NewsViewModel> MostViewedNews(int offset, int limit, string duration);
+        List<NewsViewModel> MostTalkNews(int offset, int limit, string duration);
+        List<NewsViewModel> MostPopularNews(int offset, int limit);
+
+
+		long CountNewsPublished();
     }
 }

@@ -12,7 +12,12 @@
             return Convert.ToInt32(value);
         }
 
-        public static decimal ToDecimal(this string value)
+        public static int GetNumOfWeek(this string week)
+        {
+	        string[] weekArray = { "شنبه", "یکشنبه", "دوشنبه", "سه شنبه", "چهار شنبه", "پنج شنبه", "جمعه" };
+	        return Array.IndexOf(weekArray, week);
+        }
+		public static decimal ToDecimal(this string value)
         {
             return Convert.ToDecimal(value);
         }

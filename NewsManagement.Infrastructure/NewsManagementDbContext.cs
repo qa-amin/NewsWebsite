@@ -51,6 +51,7 @@ namespace NewsManagement.Infrastructure.EFCore
 			modelBuilder.ApplyConfiguration(new CommentMapping());
 			modelBuilder.ApplyConfiguration(new LikeMapping());
 			modelBuilder.ApplyConfiguration(new VisitMapping());
+			modelBuilder.ApplyConfiguration(new BookMarkMapping());
 		}
 	}
 }

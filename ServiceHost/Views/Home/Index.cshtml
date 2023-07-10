@@ -79,11 +79,11 @@
 </section>
 <!-- ##### Hero Area End ##### -->
 <!-- ##### Trending Posts Area Start ##### -->
-@*<section class="trending-posts-area">
+<section class="trending-posts-area">
     <div id="MostViewedNewsDiv" class="container">
         @await Html.PartialAsync("_MostViewedNews", Model.MostViewedNews)
     </div>
-</section>*@
+</section>
 <!-- ##### Trending Posts Area End ##### -->
 <!-- ##### Vizew Post Area Start ##### -->
 <section class="vizew-post-area mb-50">
@@ -219,19 +219,19 @@
                 <div class="sidebar-area">
 
                     <!-- ***** MostPopularNews***** -->
-                    @*@if (Model.MostPopularNews.Count() != 0)
+                    @if (Model.MostPopularNews.Count() != 0)
                     {
                         @await Html.PartialAsync("_MostPopularNews", Model.MostPopularNews)
-                    }*@
+                    }
 
                     <!-- ***** Newsletter ***** -->
                     @await Html.PartialAsync("_RegisterInNewsletter", new CreateNewsLetter())
 
 
                     <!-- ***** Single Widget ***** -->
-                    @*<div id="MostTalkNewsDiv">
+                    <div id="MostTalkNewsDiv">
                         @await Html.PartialAsync("_MostTalkNews", Model.MostTalkNews)
-                    </div>*@
+                    </div>
 
                 </div>
 

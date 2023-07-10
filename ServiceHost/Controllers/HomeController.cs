@@ -15,16 +15,27 @@ namespace ServiceHost.Controllers
         }
 
         [Route("home/index")]
-		public IActionResult Index()
+		public IActionResult Index(string? duration, string? TypeOfNews)
         {
-            var homePageQueryModel = _homePageQuery.GetNews();
-			return View(homePageQueryModel);
+	        var isAjax = Request.Headers["X-Requested-With"] == "XMLHttpRequest";
+            if (isAjax && TypeOfNews == "MostViewedNews")
+            {
+                return PartialView("_MostViewedNews", _homePageQuery.MostViewedNews(0, 3, duration));
+            }
+            else if (isAjax && TypeOfNews == "MostTalkNews")
+			{
+				return PartialView("_MostTalkNews", _homePageQuery.MostTalkNews(0, 3, duration));
+			}
+			else
+	        {
+				var homePageQueryModel = _homePageQuery.GetNews();
+				return View(homePageQueryModel);
+			}
+
+			
 		}
 
-		public IActionResult Privacy()
-		{
-			return View();
-		}
+		
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()

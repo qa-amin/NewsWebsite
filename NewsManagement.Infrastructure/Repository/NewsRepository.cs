@@ -57,29 +57,29 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
                     news = GetPaginateNews(searchModel.Offset, searchModel.Limit, "ShortTitle desc", searchModel.Search, null, null);
             }
 
-            //else if (searchModel.Sort == "بازدید")
-            //{
-            //    if (searchModel.Order == "asc")
-            //        news = GetPaginateNews(searchModel.Offset, searchModel.Limit, "NumberOfVisit", searchModel.Search, null, null);
-            //    else
-            //        news = GetPaginateNews(searchModel.Offset, searchModel.Limit, "NumberOfVisit desc", searchModel.Search, null, null);
-            //}
+            else if (searchModel.Sort == "بازدید")
+            {
+                if (searchModel.Order == "asc")
+                    news = GetPaginateNews(searchModel.Offset, searchModel.Limit, "NumberOfVisit", searchModel.Search, null, null);
+                else
+                    news = GetPaginateNews(searchModel.Offset, searchModel.Limit, "NumberOfVisit desc", searchModel.Search, null, null);
+            }
 
-            //else if (searchModel.Sort == "لایک")
-            //{
-            //    if (searchModel.Order == "asc")
-            //        news = GetPaginateNews(searchModel.Offset, searchModel.Limit, "NumberOfLike", searchModel.Search, null, null);
-            //    else
-            //        news = GetPaginateNews(searchModel.Offset, searchModel.Limit, "NumberOfLike desc", searchModel.Search, null, null);
-            //}
+            else if (searchModel.Sort == "لایک")
+            {
+                if (searchModel.Order == "asc")
+                    news = GetPaginateNews(searchModel.Offset, searchModel.Limit, "NumberOfLike", searchModel.Search, null, null);
+                else
+                    news = GetPaginateNews(searchModel.Offset, searchModel.Limit, "NumberOfLike desc", searchModel.Search, null, null);
+            }
 
-            //else if (searchModel.Sort == "دیس لایک")
-            //{
-            //    if (searchModel.Order == "asc")
-            //        news = GetPaginateNews(searchModel.Offset, searchModel.Limit, "NumberOfDisLike", searchModel.Search, null, null);
-            //    else
-            //        news = GetPaginateNews(searchModel.Offset, searchModel.Limit, "NumberOfDisLike desc", searchModel.Search, null, null);
-            //}
+            else if (searchModel.Sort == "دیس لایک")
+            {
+                if (searchModel.Order == "asc")
+                    news = GetPaginateNews(searchModel.Offset, searchModel.Limit, "NumberOfDisLike", searchModel.Search, null, null);
+                else
+                    news = GetPaginateNews(searchModel.Offset, searchModel.Limit, "NumberOfDisLike desc", searchModel.Search, null, null);
+            }
 
             else if (searchModel.Sort == "تاریخ انتشار")
             {
@@ -89,13 +89,13 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
                     news = GetPaginateNews(searchModel.Offset, searchModel.Limit, "PublishDateTime desc", searchModel.Search, null, null);
             }
 
-            //else if (searchModel.Sort == "نظرات")
-            //{
-            //    if (searchModel.Order == "asc")
-            //        news = GetPaginateNews(searchModel.Offset, searchModel.Limit, "NumberOfComments", searchModel.Search, null, null);
-            //    else
-            //        news = GetPaginateNews(searchModel.Offset, searchModel.Limit, "NumberOfComments desc", searchModel.Search, null, null);
-            //}
+            else if (searchModel.Sort == "نظرات")
+            {
+                if (searchModel.Order == "asc")
+                    news = GetPaginateNews(searchModel.Offset, searchModel.Limit, "NumberOfComments", searchModel.Search, null, null);
+                else
+                    news = GetPaginateNews(searchModel.Offset, searchModel.Limit, "NumberOfComments desc", searchModel.Search, null, null);
+            }
 
             else
                 news = GetPaginateNews(searchModel.Offset, searchModel.Limit, "PublishDateTime desc", searchModel.Search, null, null);
@@ -165,6 +165,195 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
 
 
                 }).ToList();
+
+            foreach (var item in news)
+                item.Row = ++offset;
+
+            return news;
+        }
+
+        public  List<NewsViewModel> MostViewedNews(int offset, int limit, string duration)
+        {
+			
+			DateTime StartMiladiDate;
+			DateTime EndMiladiDate = DateTime.Now;
+
+
+			if (duration == "week")
+			{
+				int NumOfWeek = DateTimeExtensions.ConvertMiladiToShamsi(DateTime.Now, "dddd").GetNumOfWeek();
+				StartMiladiDate = DateTime.Now.AddDays((-1) * NumOfWeek).Date + new TimeSpan(0, 0, 0);
+			}
+
+			else if (duration == "day")
+				StartMiladiDate = DateTime.Now.Date + new TimeSpan(0, 0, 0);
+
+			else
+			{
+				string DayOfMonth = DateTimeExtensions.ConvertMiladiToShamsi(DateTime.Now, "dd").Fa2En();
+				StartMiladiDate = DateTime.Now.AddDays((-1) * (int.Parse(DayOfMonth) - 1)).Date + new TimeSpan(0, 0, 0);
+			}
+
+			var listTags =  _context.Tags.ToList();
+			var newsCategories =  _context.NewsCategories.ToList();
+			var users =  _managementDbContext.Users.ToList();
+			var comments =  _context.Comments.ToList();
+			var likes =  _context.Likes.ToList();
+			var visits =  _context.Visits.ToList();
+
+
+
+
+            var news =  _context.News.Include(p => p.NewsNewsCategories).Include(p => p.NewsTags)
+                .Where(n => n.PublishDateTime <= EndMiladiDate && StartMiladiDate <= n.PublishDateTime)
+                .Select(p => new NewsViewModel
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Abstract = p.Abstract,
+                    ShortTitle = p.Title.Length > 50 ? p.Title.Substring(0, 50) + "..." : p.Title,
+                    Url = p.Url,
+                    ImageName = p.ImageName,
+                    Description = p.Description,
+                    IsPublish = p.IsPublish,
+                    AuthorName = GetUserName(p.UserId, users),
+                    PublishDateTime = p.PublishDateTime,
+                    NameOfCategories = GetCategoriesName(p.NewsNewsCategories, p.Id, newsCategories),
+                    NameOfTags = GetTagsName(p.NewsTags, p.Id, listTags),
+                    NewsType = p.IsInternal ? "داخلی" : "خارجی",
+                    Status = p.IsPublish == false
+                        ? "پیش نویس"
+                        : (p.PublishDateTime <= DateTime.Now ? "منتشر" : "انتشار در آینده"),
+                    PersianPublishDate = p.PublishDateTime.ConvertMiladiToShamsi("yyyy/MM/dd ساعت HH:mm"),
+                    NumberOfVisit =  GetNumberOfVisit(p.Id, visits),
+                    NumberOfLike = GetNumberOfLike(p.Id, likes),
+                    NumberOfDisLike = GetNumberOfDisLike(p.Id, likes),
+                    NumberOfComments = GetNumberOfComments(p.Id, comments),
+
+
+
+                }).ToList();
+
+            news = news.OrderByDescending(p => p.NumberOfVisit).ToList();
+            news = news.Skip(offset).Take(limit).ToList();
+            foreach (var item in news)
+				item.Row = ++offset;
+
+
+            return news;
+        }
+
+        public List<NewsViewModel> MostTalkNews(int offset, int limit, string duration)
+        {
+            DateTime StartMiladiDate;
+            DateTime EndMiladiDate = DateTime.Now;
+
+
+            if (duration == "week")
+            {
+                int NumOfWeek = DateTimeExtensions.ConvertMiladiToShamsi(DateTime.Now, "dddd").GetNumOfWeek();
+                StartMiladiDate = DateTime.Now.AddDays((-1) * NumOfWeek).Date + new TimeSpan(0, 0, 0);
+            }
+
+            else if (duration == "day")
+                StartMiladiDate = DateTime.Now.Date + new TimeSpan(0, 0, 0);
+
+            else
+            {
+                string DayOfMonth = DateTimeExtensions.ConvertMiladiToShamsi(DateTime.Now, "dd").Fa2En();
+                StartMiladiDate = DateTime.Now.AddDays((-1) * (int.Parse(DayOfMonth) - 1)).Date + new TimeSpan(0, 0, 0);
+            }
+
+            var listTags = _context.Tags.ToList();
+            var newsCategories = _context.NewsCategories.ToList();
+            var users = _managementDbContext.Users.ToList();
+            var comments = _context.Comments.ToList();
+            var likes = _context.Likes.ToList();
+            var visits = _context.Visits.ToList();
+
+
+
+
+            var news = _context.News.Include(p => p.NewsNewsCategories).Include(p => p.NewsTags)
+                .Where(n => n.PublishDateTime <= EndMiladiDate && StartMiladiDate <= n.PublishDateTime)
+                .Select(p => new NewsViewModel
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Abstract = p.Abstract,
+                    ShortTitle = p.Title.Length > 50 ? p.Title.Substring(0, 50) + "..." : p.Title,
+                    Url = p.Url,
+                    ImageName = p.ImageName,
+                    Description = p.Description,
+                    IsPublish = p.IsPublish,
+                    AuthorName = GetUserName(p.UserId, users),
+                    PublishDateTime = p.PublishDateTime,
+                    NameOfCategories = GetCategoriesName(p.NewsNewsCategories, p.Id, newsCategories),
+                    NameOfTags = GetTagsName(p.NewsTags, p.Id, listTags),
+                    NewsType = p.IsInternal ? "داخلی" : "خارجی",
+                    Status = p.IsPublish == false ? "پیش نویس" : (p.PublishDateTime <= DateTime.Now ? "منتشر" : "انتشار در آینده"),
+                    PersianPublishDate = p.PublishDateTime.ConvertMiladiToShamsi("yyyy/MM/dd ساعت HH:mm"),
+                    NumberOfVisit = GetNumberOfVisit(p.Id, visits),
+                    NumberOfLike = GetNumberOfLike(p.Id, likes),
+                    NumberOfDisLike = GetNumberOfDisLike(p.Id, likes),
+                    NumberOfComments = GetNumberOfComments(p.Id, comments),
+
+
+
+                }).ToList();
+
+
+            news = news.OrderByDescending(p => p.NumberOfComments).ToList();
+            news = news.Skip(offset).Take(limit).ToList();
+
+            foreach (var item in news)
+                item.Row = ++offset;
+
+            return news;
+        }
+
+        public List<NewsViewModel> MostPopularNews(int offset, int limit)
+        {
+            var listTags = _context.Tags.ToList();
+            var newsCategories = _context.NewsCategories.ToList();
+            var users = _managementDbContext.Users.ToList();
+            var comments = _context.Comments.ToList();
+            var likes = _context.Likes.ToList();
+            var visits = _context.Visits.ToList();
+
+
+
+
+            var news = _context.News.Include(p => p.NewsNewsCategories).Include(p => p.NewsTags)
+                .Where(p => p.IsPublish && p.PublishDateTime <= DateTime.Now)
+                .Select(p => new NewsViewModel
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Abstract = p.Abstract,
+                    ShortTitle = p.Title.Length > 50 ? p.Title.Substring(0, 50) + "..." : p.Title,
+                    Url = p.Url,
+                    ImageName = p.ImageName,
+                    Description = p.Description,
+                    IsPublish = p.IsPublish,
+                    AuthorName = GetUserName(p.UserId, users),
+                    PublishDateTime = p.PublishDateTime,
+                    NameOfCategories = GetCategoriesName(p.NewsNewsCategories, p.Id, newsCategories),
+                    NameOfTags = GetTagsName(p.NewsTags, p.Id, listTags),
+                    NewsType = p.IsInternal ? "داخلی" : "خارجی",
+                    Status = p.IsPublish == false ? "پیش نویس" : (p.PublishDateTime <= DateTime.Now ? "منتشر" : "انتشار در آینده"),
+                    PersianPublishDate = p.PublishDateTime.ConvertMiladiToShamsi("yyyy/MM/dd ساعت HH:mm"),
+                    NumberOfVisit = GetNumberOfVisit(p.Id, visits),
+                    NumberOfLike = GetNumberOfLike(p.Id, likes),
+                    NumberOfDisLike = GetNumberOfDisLike(p.Id, likes),
+                    NumberOfComments = GetNumberOfComments(p.Id, comments),
+
+
+
+                }).ToList();
+
+            news = news.OrderByDescending(p => p.NumberOfLike).ToList();
+            news = news.Skip(offset).Take(limit).ToList();
 
             foreach (var item in news)
                 item.Row = ++offset;
