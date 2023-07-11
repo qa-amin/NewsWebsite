@@ -1,4 +1,5 @@
 ﻿using _1_NewsManagementQuery.Contracts.HomePage;
+using _1_NewsManagementQuery.Contracts.NewsDetail;
 using _1_NewsManagementQuery.Query;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -68,6 +69,7 @@ namespace NewsManagement.Infrastructure.Configuration
             services.AddTransient<IBookMarkApplication, BookMarkApplication>();
 
 			services.AddTransient<IHomePageQuery, HomePageQuery>();
+			services.AddTransient<INewsDetailQuery, NewsDetailQuery>();
 
         }
 	}

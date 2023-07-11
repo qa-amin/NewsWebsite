@@ -121,6 +121,9 @@ namespace NewsManagement.Application.Contrasts.News
         //public User AuthorInfo { get; set; }
 
         [JsonIgnore]
+        public string Authorimg { get; set; }
+
+        [JsonIgnore]
         public NewsNewsCategoryViewModel NewsCategoriesViewModel { get; set; }
 
         //[JsonIgnore]

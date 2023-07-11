@@ -99,5 +99,31 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
 		{
 			return _context.Comments.Where(p => p.ParentCommentId == id).ToList();
 		}
-	}
+
+        public List<Comment> getNewsComments(long newsId)
+        {
+
+            var comments = _context.Comments
+                .Where(p => p.IsConfirm && p.NewsId == newsId && p.ParentCommentId == null).ToList();
+
+            foreach (var item in comments)
+            {
+                BindSubComments(item);
+				
+            }
+
+			return comments;
+        }
+
+        private void BindSubComments(Comment comment)
+        {
+            var subComments = _context.Comments.Where(p => p.IsConfirm && p.ParentCommentId == comment.NewsId).ToList();
+
+            foreach (var item in subComments)
+            {
+                BindSubComments(item);
+				item.comments.Add(item);
+            }
+        }
+    }
 }

@@ -16,5 +16,7 @@ namespace NewsManagement.Domain.CommentAgg
 			string newsId, bool? isConfirm);
 
 		List<Comment> findChildOfComments(long id);
-	}
+
+        List<Comment> getNewsComments(long newsId);
+    }
 }

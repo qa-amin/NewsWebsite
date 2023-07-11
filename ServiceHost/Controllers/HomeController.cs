@@ -2,16 +2,26 @@
 using ServiceHost.Models;
 using System.Diagnostics;
 using _1_NewsManagementQuery.Contracts.HomePage;
+using _1_NewsManagementQuery.Contracts.NewsDetail;
+using AccountManagement.Application.Contrast.User;
+using NewsManagement.Application.Contrasts.Visit;
 
 namespace ServiceHost.Controllers
 {
 	public class HomeController : Controller
     {
         private readonly IHomePageQuery _homePageQuery;
+        private readonly INewsDetailQuery _newsDetailQuery;
+        private readonly IVisitApplication _visitApplication;
+        private readonly IUserApplication _userApplication;
+         
 
-        public HomeController(IHomePageQuery homePageQuery)
+        public HomeController(IHomePageQuery homePageQuery, INewsDetailQuery newsDetailQuery, IVisitApplication visitApplication, IUserApplication userApplication)
         {
             _homePageQuery = homePageQuery;
+            _newsDetailQuery = newsDetailQuery;
+            _visitApplication = visitApplication;
+            _userApplication = userApplication;
         }
 
         [Route("home/index")]
@@ -35,9 +45,27 @@ namespace ServiceHost.Controllers
 			
 		}
 
-		
+        [Route("News/{newsId}/{url}")]
 
-		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult NewsDetails(long newsId, string url)
+        {
+            _visitApplication.VisitLog(newsId);
+
+            long? userId = null;
+            if (User.Identity.IsAuthenticated)
+            {
+                userId = _userApplication.GetUser(User).Id;
+            }
+
+            var getDetails = _newsDetailQuery.GetDetail(newsId, userId);
+
+            return View(getDetails);
+
+        }
+
+
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
 		{
 			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

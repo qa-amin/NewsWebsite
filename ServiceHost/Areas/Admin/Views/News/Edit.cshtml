@@ -120,7 +120,7 @@
 			        <div class="row">
 				        <div class="col-md-9">
 					        <div class="form-group">
-						        <input asp-for="Title" class="form-control" placeholder="عنوان خبر"/>
+								<input asp-for="Title" class="form-control" placeholder="عنوان خبر" onchange="makeSlug('Title','Url')" />
 						        <span asp-validation-for="Title" class="text-danger"></span>
 					        </div>
 					        <div class="form-group">

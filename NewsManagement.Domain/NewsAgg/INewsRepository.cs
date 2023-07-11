@@ -22,7 +22,10 @@ namespace NewsManagement.Domain.NewsAgg
         List<NewsViewModel> MostTalkNews(int offset, int limit, string duration);
         List<NewsViewModel> MostPopularNews(int offset, int limit);
 
+        NewsViewModel GetNewsById(long newsId, long? userId);
 
-		long CountNewsPublished();
+        List<NewsViewModel> GetNextAndPreviousNews(DateTime? publishDateTime, long? userId);
+
+        long CountNewsPublished();
     }
 }

@@ -17,13 +17,15 @@ using NewsManagement.Domain.NewsTagAgg;
 using NewsManagement.Domain.TagAgg;
 using NewsManagement.Infrastructure.EFCore.Migrations;
 using NewsWebsite.Common;
-using System.Linq.Dynamic.Core;
 using NewsWebsite.Entities;
 using AccountManagement.Domain.UserAgg;
+using AccountManagement.Domain.UserRoleAgg;
 using NewsManagement.Domain.CommentAgg;
 using NewsManagement.Domain.LikeAgg;
 using Microsoft.EntityFrameworkCore.Metadata;
+using NewsManagement.Domain.BookMarkAgg;
 using NewsManagement.Domain.VisitAgg;
+using System.Linq.Dynamic.Core;
 
 namespace NewsManagement.Infrastructure.EFCore.Repository
 {
@@ -139,7 +141,7 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
                 && (isInternal == null || (convertInternal ? p.IsInternal : !p.IsInternal))
                 
                 && (isPublish == null || (convertPublish ? p.IsPublish && p.PublishDateTime <= DateTime.Now : !p.IsPublish))
-                ).OrderBy(orderBy).Skip(offset).Take(limit)
+                )
                 .Select(p => new NewsViewModel
                 {
                     Id = p.Id,
@@ -166,7 +168,52 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
 
                 }).ToList();
 
-            foreach (var item in news)
+            switch (orderBy)
+            {
+                case "ShortTitle":
+	                news = news.OrderBy(p => p.ShortTitle).ToList();
+                    break;
+                case "ShortTitle desc":
+	                news = news.OrderByDescending(p => p.ShortTitle).ToList();
+	                break;
+				case "NumberOfVisit":
+	                news = news.OrderBy(p => p.NumberOfVisit).ToList();
+                    break;
+                case "NumberOfVisit desc":
+	                news = news.OrderByDescending(p => p.NumberOfVisit).ToList();
+	                break;
+
+				case "NumberOfLike":
+	                news = news.OrderBy(p => p.NumberOfLike).ToList();
+                    break;
+                case "NumberOfLike desc":
+	                news = news.OrderByDescending(p => p.NumberOfLike).ToList();
+	                break;
+				case "NumberOfDisLike":
+                    news = news.OrderBy(p => p.NumberOfDisLike).ToList();
+                    break;
+                case "NumberOfDisLike desc":
+	                news = news.OrderByDescending(p => p.NumberOfDisLike).ToList();
+	                break;
+				case "NumberOfComments":
+	                news = news.OrderBy(p => p.NumberOfComments).ToList();
+                    break;
+                case "NumberOfComments desc":
+	                news = news.OrderByDescending(p => p.NumberOfComments).ToList();
+	                break;
+				case "PublishDateTime":
+	                news = news.OrderBy(p => p.PublishDateTime).ToList();
+                    break;
+                case "PublishDateTime desc":
+	                news = news.OrderByDescending(p => p.PublishDateTime).ToList();
+                    break;
+
+			}
+
+            news = news.Skip(offset).Take(limit).ToList();
+
+
+			foreach (var item in news)
                 item.Row = ++offset;
 
             return news;
@@ -359,6 +406,143 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
                 item.Row = ++offset;
 
             return news;
+        }
+
+        public NewsViewModel GetNewsById(long newsId, long? userId)
+        {
+            var listTags = _context.Tags.ToList();
+            var newsCategories = _context.NewsCategories.ToList();
+            var users = _managementDbContext.Users.ToList();
+            var comments = _context.Comments.ToList();
+            var likes = _context.Likes.ToList();
+            var visits = _context.Visits.ToList();
+            var bookMarks = _context.BookMarks.ToList();
+
+
+
+
+            var news = _context.News.Include(p => p.NewsNewsCategories).Include(p => p.NewsTags)
+                .Select(p => new NewsViewModel
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Abstract = p.Abstract,
+                    ShortTitle = p.Title.Length > 50 ? p.Title.Substring(0, 50) + "..." : p.Title,
+                    Url = p.Url,
+                    ImageName = p.ImageName,
+                    Description = p.Description,
+                    IsPublish = p.IsPublish,
+                    AuthorName = GetUserName(p.UserId, users),
+                    PublishDateTime = p.PublishDateTime,
+                    NameOfCategories = GetCategoriesName(p.NewsNewsCategories, p.Id, newsCategories),
+                    NameOfTags = GetTagsName(p.NewsTags, p.Id, listTags),
+                    NewsType = p.IsInternal ? "داخلی" : "خارجی",
+                    Status = p.IsPublish == false ? "پیش نویس" : (p.PublishDateTime <= DateTime.Now ? "منتشر" : "انتشار در آینده"),
+                    PersianPublishDate = p.PublishDateTime.ConvertMiladiToShamsi("yyyy/MM/dd ساعت HH:mm"),
+                    NumberOfVisit = GetNumberOfVisit(p.Id, visits),
+                    NumberOfLike = GetNumberOfLike(p.Id, likes),
+                    NumberOfDisLike = GetNumberOfDisLike(p.Id, likes),
+                    NumberOfComments = GetNumberOfComments(p.Id, comments),
+                    IsBookmarked = IsNewsBookMarked(p.Id, userId, bookMarks),
+                    Authorimg =GetUserImage(p.UserId,users) ,
+                    
+
+
+
+                }).FirstOrDefault(p => p.Id == newsId);
+
+
+
+            return news;
+        }
+
+        private static string GetUserImage(long UserId, List<User> users)
+        {
+            return users.FirstOrDefault(p => p.Id == UserId).Image;
+        }
+
+        public List<NewsViewModel> GetNextAndPreviousNews(DateTime? publishDateTime, long? userId)
+        {
+            var listNews = new List<NewsViewModel>();
+
+            var listTags = _context.Tags.ToList();
+            var newsCategories = _context.NewsCategories.ToList();
+            var users = _managementDbContext.Users.ToList();
+            var comments = _context.Comments.ToList();
+            var likes = _context.Likes.ToList();
+            var visits = _context.Visits.ToList();
+            var bookMarks = _context.BookMarks.ToList();
+
+
+
+
+            var previos = _context.News.Include(p => p.NewsNewsCategories).Include(p => p.NewsTags)
+                .Select(p => new NewsViewModel
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Abstract = p.Abstract,
+                    ShortTitle = p.Title.Length > 50 ? p.Title.Substring(0, 50) + "..." : p.Title,
+                    Url = p.Url,
+                    ImageName = p.ImageName,
+                    Description = p.Description,
+                    IsPublish = p.IsPublish,
+                    AuthorName = GetUserName(p.UserId, users),
+                    PublishDateTime = p.PublishDateTime,
+                    NameOfCategories = GetCategoriesName(p.NewsNewsCategories, p.Id, newsCategories),
+                    NameOfTags = GetTagsName(p.NewsTags, p.Id, listTags),
+                    NewsType = p.IsInternal ? "داخلی" : "خارجی",
+                    Status = p.IsPublish == false ? "پیش نویس" : (p.PublishDateTime <= DateTime.Now ? "منتشر" : "انتشار در آینده"),
+                    PersianPublishDate = p.PublishDateTime.ConvertMiladiToShamsi("yyyy/MM/dd ساعت HH:mm"),
+                    NumberOfVisit = GetNumberOfVisit(p.Id, visits),
+                    NumberOfLike = GetNumberOfLike(p.Id, likes),
+                    NumberOfDisLike = GetNumberOfDisLike(p.Id, likes),
+                    NumberOfComments = GetNumberOfComments(p.Id, comments),
+                    IsBookmarked = IsNewsBookMarked(p.Id, userId, bookMarks)
+
+
+
+                }).OrderByDescending(p => p.PublishDateTime).FirstOrDefault(p => p.IsPublish && p.PublishDateTime <= DateTime.Now && p.PublishDateTime < publishDateTime);
+
+            listNews.Add(previos);
+
+
+            var next = _context.News.Include(p => p.NewsNewsCategories).Include(p => p.NewsTags)
+                .Select(p => new NewsViewModel
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Abstract = p.Abstract,
+                    ShortTitle = p.Title.Length > 50 ? p.Title.Substring(0, 50) + "..." : p.Title,
+                    Url = p.Url,
+                    ImageName = p.ImageName,
+                    Description = p.Description,
+                    IsPublish = p.IsPublish,
+                    AuthorName = GetUserName(p.UserId, users),
+                    PublishDateTime = p.PublishDateTime,
+                    NameOfCategories = GetCategoriesName(p.NewsNewsCategories, p.Id, newsCategories),
+                    NameOfTags = GetTagsName(p.NewsTags, p.Id, listTags),
+                    NewsType = p.IsInternal ? "داخلی" : "خارجی",
+                    Status = p.IsPublish == false ? "پیش نویس" : (p.PublishDateTime <= DateTime.Now ? "منتشر" : "انتشار در آینده"),
+                    PersianPublishDate = p.PublishDateTime.ConvertMiladiToShamsi("yyyy/MM/dd ساعت HH:mm"),
+                    NumberOfVisit = GetNumberOfVisit(p.Id, visits),
+                    NumberOfLike = GetNumberOfLike(p.Id, likes),
+                    NumberOfDisLike = GetNumberOfDisLike(p.Id, likes),
+                    NumberOfComments = GetNumberOfComments(p.Id, comments),
+                    IsBookmarked = IsNewsBookMarked(p.Id, userId, bookMarks)
+
+
+
+                }).OrderBy(p => p.PublishDateTime).FirstOrDefault(p => p.IsPublish && p.PublishDateTime <= DateTime.Now && p.PublishDateTime > publishDateTime);
+
+                listNews.Add(next);
+
+                return listNews;
+        }
+
+        private static bool IsNewsBookMarked(long newsId, long? userId, List<BookMark> bookMarks)
+        {
+           return bookMarks.Any(p => p.UserId == userId && p.NewsId == newsId);
         }
 
         private static int GetNumberOfVisit(long newsId, List<Visit> visits)
