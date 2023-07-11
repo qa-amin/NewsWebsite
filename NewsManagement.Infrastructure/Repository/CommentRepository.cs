@@ -102,9 +102,22 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
 
         public List<Comment> getNewsComments(long newsId)
         {
-
+	        
             var comments = _context.Comments
-                .Where(p => p.IsConfirm && p.NewsId == newsId && p.ParentCommentId == null).ToList();
+                .Where(p => p.IsConfirm == true && p.NewsId == newsId && p.ParentCommentId == null)
+                .Select( p => new Comment
+	                {
+						Id = p.Id,
+						Name = p.Name,
+						Email = p.Email,
+						IsConfirm = p.IsConfirm,
+						Description = p.Description,
+						NewsId = p.NewsId,
+						ParentCommentId = p.ParentCommentId,
+						PostageDateTime = p.PostageDateTime,
+						
+	                }
+                ).ToList();
 
             foreach (var item in comments)
             {
@@ -117,12 +130,26 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
 
         private void BindSubComments(Comment comment)
         {
-            var subComments = _context.Comments.Where(p => p.IsConfirm && p.ParentCommentId == comment.NewsId).ToList();
+            var subComments = _context.Comments.Where(p => p.IsConfirm == true && p.ParentCommentId == comment.Id)
+	            .Select(p => new Comment
+	            {
+		            Id = p.Id,
+		            Name = p.Name,
+		            Email = p.Email,
+		            IsConfirm = p.IsConfirm,
+		            Description = p.Description,
+		            NewsId = p.NewsId,
+		            ParentCommentId = p.ParentCommentId,
+		            PostageDateTime = p.PostageDateTime,
+				})
+	            .ToList();
 
             foreach (var item in subComments)
             {
+				
                 BindSubComments(item);
-				item.comments.Add(item);
+				comment.comments.Add(item);
+					
             }
         }
     }

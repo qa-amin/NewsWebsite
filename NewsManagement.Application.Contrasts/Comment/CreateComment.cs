@@ -30,6 +30,6 @@ namespace NewsManagement.Application.Contrasts.Comment
 
 
 		[JsonIgnore]
-		public long ParentCommentId { get; set; }
+		public long? ParentCommentId { get; set; }
 	}
 }

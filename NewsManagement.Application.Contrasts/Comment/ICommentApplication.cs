@@ -16,6 +16,7 @@ namespace NewsManagement.Application.Contrasts.Comment
 		OperationResult Delete(EditComment command);
 
 		OperationResult ConfirmOrInconfirm(long id);
+		OperationResult SendComment(CreateComment comment);
 
 	}
 }

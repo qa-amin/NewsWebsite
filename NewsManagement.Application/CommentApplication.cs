@@ -77,6 +77,17 @@ namespace NewsManagement.Application
 			return operation.Succeeded();
 		}
 
+		public OperationResult SendComment(CreateComment comment)
+		{
+			var operation = new OperationResult();
+			var newComment = new Comment(comment.Name, comment.Email, comment.Desription, comment.NewsId,
+				comment.ParentCommentId);
+			_commentRepository.Create(newComment);
+			_commentRepository.SaveChanges();
+
+			return operation.Succeeded("نظر با موفقیت ثبت شد");
+		}
+
 		private void DeleteChild(long commentId)
 		{
 			var child = _commentRepository.findChildOfComments(commentId);

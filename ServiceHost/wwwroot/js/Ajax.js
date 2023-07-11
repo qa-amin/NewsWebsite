@@ -216,7 +216,7 @@ function SendComment(parentCommentId) {
         if (IsValid) {
             $("#comment-" + parentCommentId).next().replaceWith("");
             $("#comment-" + parentCommentId).next().replaceWith("");
-            $.ajax({ url: '/Admin/Base/Notification', error: function () { ShowSweetErrorAlert(); } }).done(function (notification) {
+            $.ajax({ url: '/admin/showmassage/index', error: function () { ShowSweetErrorAlert(); } }).done(function (notification) {
                 ShowSweetSuccessAlert(notification)
             });
             $("#Name").val("");

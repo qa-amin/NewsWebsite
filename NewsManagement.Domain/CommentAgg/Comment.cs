@@ -24,6 +24,10 @@ namespace NewsManagement.Domain.CommentAgg
 		public virtual ICollection<Comment> comments { get; set; }
 		public virtual News News { get; set; }
 
+		public Comment()
+		{
+			comments = new List<Comment>();
+		}
 
 		public Comment(string name, string email, string description, long newsId, long? parentCommentId)
 		{
@@ -32,7 +36,7 @@ namespace NewsManagement.Domain.CommentAgg
 			Description = description;
 			NewsId = newsId;
 			ParentCommentId = parentCommentId;
-
+			IsConfirm = false;
 			PostageDateTime = DateTime.Now;
 		}
 

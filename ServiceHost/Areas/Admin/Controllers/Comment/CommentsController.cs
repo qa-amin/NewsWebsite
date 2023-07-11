@@ -91,6 +91,42 @@ namespace ServiceHost.Areas.Admin.Controllers.Comment
 
 		}
 
+		[Area("Admin")]
+		[Route("admin/comments/SendComment")]
+		[HttpGet]
+		public IActionResult SendComment(long? parentCommentId, long newsId)
+		{
+			var newComment = new CreateComment
+			{
+				NewsId = newsId,
+				ParentCommentId = parentCommentId
+			};
+
+			return PartialView("_SendComment", newComment);
+
+		}
+		[Area("Admin")]
+		[Route("admin/comments/SendComment")]
+		[HttpPost]
+		public IActionResult SendComment(CreateComment command)
+		{
+			if (ModelState.IsValid)
+			{
+				var result = _commentApplication.SendComment(command);
+				
+				TempData["ShowMassage"] = JsonConvert.SerializeObject(result);
+				
+				
+
+			}
+
+
+			return PartialView("_SendComment",command);
+
+
+
+		}
+
 
 	}
 }
