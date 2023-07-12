@@ -19,6 +19,7 @@ var cs = builder.Configuration.GetConnectionString("sqlserver");
 NewsManagementBootstrapper.Config(builder.Services,cs);
 AccountManagementBootstrapper.Config(builder.Services, cs);
 
+
 builder.Services.AddIdentity<User, Role>()
 	.AddEntityFrameworkStores<AccountManagementDbContext>()
 	.AddDefaultTokenProviders()

@@ -3,6 +3,7 @@ using ServiceHost.Models;
 using System.Diagnostics;
 using _1_NewsManagementQuery.Contracts.HomePage;
 using _1_NewsManagementQuery.Contracts.NewsDetail;
+using _1_NewsManagementQuery.Contracts.NewsPaginate;
 using AccountManagement.Application.Contrast.User;
 using NewsManagement.Application.Contrasts.Visit;
 
@@ -12,16 +13,19 @@ namespace ServiceHost.Controllers
     {
         private readonly IHomePageQuery _homePageQuery;
         private readonly INewsDetailQuery _newsDetailQuery;
+        private readonly INewsPaginateQuery _newsPaginateQuery;
         private readonly IVisitApplication _visitApplication;
         private readonly IUserApplication _userApplication;
+
          
 
-        public HomeController(IHomePageQuery homePageQuery, INewsDetailQuery newsDetailQuery, IVisitApplication visitApplication, IUserApplication userApplication)
+        public HomeController(IHomePageQuery homePageQuery, INewsDetailQuery newsDetailQuery, IVisitApplication visitApplication, IUserApplication userApplication, INewsPaginateQuery newsPaginateQuery)
         {
             _homePageQuery = homePageQuery;
             _newsDetailQuery = newsDetailQuery;
             _visitApplication = visitApplication;
             _userApplication = userApplication;
+            _newsPaginateQuery = newsPaginateQuery;
         }
 
         [Route("home/index")]
@@ -63,9 +67,15 @@ namespace ServiceHost.Controllers
 
         }
 
+        public IActionResult GetNewsPaginate(int limit, int offset)
+        {
+            var newsPageinate = _newsPaginateQuery.GetNewsPaginate(limit, offset);
+
+            return PartialView("_NewsPaginate", newsPageinate);
+        }
 
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
 		{
 			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
