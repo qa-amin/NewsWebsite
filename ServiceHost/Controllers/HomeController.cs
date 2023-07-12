@@ -9,6 +9,8 @@ using AccountManagement.Application.Contrast.User;
 using NewsManagement.Application.Contrasts.Visit;
 using _0_Framework.Application;
 using _1_NewsManagementQuery.Contracts.NewsInCategoriesAndTags;
+using NewsManagement.Application.Contrasts.Video;
+using NewsManagement.Domain.VideoAgg;
 
 namespace ServiceHost.Controllers
 {
@@ -21,11 +23,12 @@ namespace ServiceHost.Controllers
         private readonly INewsInCategoriesAndTagsQuery _newsInCategoriesAndTagsQuery;
         private readonly IVisitApplication _visitApplication;
         private readonly IUserApplication _userApplication;
+        private readonly IVideoApplication _videoApplication;
 
 
          
 
-        public HomeController(IHomePageQuery homePageQuery, INewsDetailQuery newsDetailQuery, IVisitApplication visitApplication, IUserApplication userApplication, INewsPaginateQuery newsPaginateQuery, ICategoryOrTagInfoQuery categoryOrTagInfoQuery, INewsInCategoriesAndTagsQuery newsInCategoriesAndTagsQuery)
+        public HomeController(IHomePageQuery homePageQuery, INewsDetailQuery newsDetailQuery, IVisitApplication visitApplication, IUserApplication userApplication, INewsPaginateQuery newsPaginateQuery, ICategoryOrTagInfoQuery categoryOrTagInfoQuery, INewsInCategoriesAndTagsQuery newsInCategoriesAndTagsQuery, IVideoApplication videoApplication)
         {
             _homePageQuery = homePageQuery;
             _newsDetailQuery = newsDetailQuery;
@@ -34,6 +37,7 @@ namespace ServiceHost.Controllers
             _newsPaginateQuery = newsPaginateQuery;
             _categoryOrTagInfoQuery = categoryOrTagInfoQuery;
             _newsInCategoriesAndTagsQuery = newsInCategoriesAndTagsQuery;
+            _videoApplication = videoApplication;
         }
 
         [Route("home/index")]
@@ -122,6 +126,29 @@ namespace ServiceHost.Controllers
             }
 
 
+        }
+
+        [Route("Video")]
+        public IActionResult Videos()
+        {
+            var video = _videoApplication.GetAllVideos();
+            return View(video);
+        }
+
+
+        [Route("Video/{videoId}")]
+        public async Task<IActionResult> VideoDetails(long videoId)
+        {
+            if (videoId == 0)
+                return NotFound();
+            else
+            {
+                var video = _videoApplication.GetVideo(videoId);
+                if (video == null)
+                    return NotFound();
+                else
+                    return View(video);
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

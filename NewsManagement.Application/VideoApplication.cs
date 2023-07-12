@@ -105,5 +105,32 @@ namespace NewsManagement.Application
         {
             return _videoRepository.GetDetail(id);
         }
+
+        public List<VideoViewModel> GetAllVideos()
+        {
+           return _videoRepository.Get().Select(p => new VideoViewModel
+           {
+               Id = p.Id,
+               Title = p.Title,
+               Url = p.Url,
+               PublishDateTime = p.PublishDateTime,
+               Poster = p.Poster,
+               PersianPublishDateTime = p.PublishDateTime.ConvertMiladiToShamsi("yyyy/MM/dd ساعت HH:mm:ss")
+           }).ToList();
+        }
+
+        public VideoViewModel GetVideo(long id)
+        {
+            var video = _videoRepository.Get(id);
+            return new VideoViewModel
+            {
+                Url = video.Url,
+                Title = video.Title,
+                PublishDateTime = video.PublishDateTime,
+                Poster = video.Poster,
+                PersianPublishDateTime = video.PublishDateTime.ConvertMiladiToShamsi("yyyy/MM/dd ساعت HH:mm:ss"),
+                Id = video.Id,
+            };
+        }
     }
 }

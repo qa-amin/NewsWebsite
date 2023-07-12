@@ -17,5 +17,7 @@ namespace NewsManagement.Application.Contrasts.Video
         (List<VideoViewModel>, int) Search(VideoSearchModel searchModel);
 
         EditVideo GetDetails(long id);
+        List<VideoViewModel> GetAllVideos();
+        VideoViewModel GetVideo(long id);
     }
 }
