@@ -112,7 +112,7 @@ namespace NewsManagement.Application.Contrasts.News
         public string IdOfCategories { get; set; }
 
         [JsonIgnore]
-        public List<string> TagIdsList { get; set; }
+        public List<long> TagIdsList { get; set; }
 
         [JsonIgnore]
         public List<string> TagNamesList { get; set; }

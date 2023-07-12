@@ -26,6 +26,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using NewsManagement.Domain.BookMarkAgg;
 using NewsManagement.Domain.VisitAgg;
 using System.Linq.Dynamic.Core;
+using System.Security.Cryptography;
 
 namespace NewsManagement.Infrastructure.EFCore.Repository
 {
@@ -33,6 +34,7 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
     {
         private readonly NewsManagementDbContext _context;
         private readonly AccountManagementDbContext _managementDbContext;
+        private INewsRepository _newsRepositoryImplementation;
 
         public NewsRepository( NewsManagementDbContext context, AccountManagementDbContext managementDbContext) : base(context)
         {
@@ -445,15 +447,33 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
                     NumberOfComments = GetNumberOfComments(p.Id, comments),
                     IsBookmarked = IsNewsBookMarked(p.Id, userId, bookMarks),
                     Authorimg =GetUserImage(p.UserId,users) ,
-                    
-
+                    TagIdsList = GetTagId(p.NewsTags,p.Id, listTags),
 
 
                 }).FirstOrDefault(p => p.Id == newsId);
 
+           var listNameTag = news.NameOfTags.Split().Skip(1).ToList();
+
+           news.TagNamesList = listNameTag;
+
 
 
             return news;
+        }
+
+        private static List<long> GetTagId(ICollection<NewsTag> newsTag, long pId, List<Tag> tags)
+        {
+            var newsWithTags = tags.Join(newsTag,
+                t => t.Id,
+                nt => nt.TagId,
+                (t, nt) => new
+                {
+                    newsId = nt.NewsId,
+                    tagId = t.Id,
+                   
+                }).Where(p => p.newsId == pId).ToList();
+
+            return newsWithTags.Select(p => p.tagId).ToList();
         }
 
         private static string GetUserImage(long UserId, List<User> users)
@@ -538,6 +558,102 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
                 listNews.Add(next);
 
                 return listNews;
+        }
+
+        public List<NewsViewModel> GetNewsinCategory(int categoryId, int pageIndex, int pageSize)
+        {
+            var listTags = _context.Tags.ToList();
+            var newsCategories = _context.NewsCategories.ToList();
+            var users = _managementDbContext.Users.ToList();
+            var comments = _context.Comments.ToList();
+            var likes = _context.Likes.ToList();
+            var visits = _context.Visits.ToList();
+
+
+
+
+            var news = _context.News.Include(p => p.NewsNewsCategories).Include(p => p.NewsTags)
+                .Where(n => n.IsPublish && n.PublishDateTime <= DateTime.Now && n.NewsNewsCategories.Select(p => p.NewsCategoryId).Contains(categoryId))
+                .Select(p => new NewsViewModel
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Abstract = p.Abstract,
+                    ShortTitle = p.Title.Length > 50 ? p.Title.Substring(0, 50) + "..." : p.Title,
+                    Url = p.Url,
+                    ImageName = p.ImageName,
+                    Description = p.Description,
+                    IsPublish = p.IsPublish,
+                    AuthorName = GetUserName(p.UserId, users),
+                    PublishDateTime = p.PublishDateTime,
+                    NameOfCategories = GetCategoriesName(p.NewsNewsCategories, p.Id, newsCategories),
+                    NameOfTags = GetTagsName(p.NewsTags, p.Id, listTags),
+                    NewsType = p.IsInternal ? "داخلی" : "خارجی",
+                    Status = p.IsPublish == false
+                        ? "پیش نویس"
+                        : (p.PublishDateTime <= DateTime.Now ? "منتشر" : "انتشار در آینده"),
+                    PersianPublishDate = p.PublishDateTime.ConvertMiladiToShamsi("yyyy/MM/dd ساعت HH:mm"),
+                    NumberOfVisit = GetNumberOfVisit(p.Id, visits),
+                    NumberOfLike = GetNumberOfLike(p.Id, likes),
+                    NumberOfDisLike = GetNumberOfDisLike(p.Id, likes),
+                    NumberOfComments = GetNumberOfComments(p.Id, comments),
+
+
+
+                }).ToList();
+
+            
+            news = news.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+           
+            return news;
+        }
+
+        public List<NewsViewModel> GetNewsinTag(long tagId, int pageIndex, int pageSize)
+        {
+            var listTags = _context.Tags.ToList();
+            var newsCategories = _context.NewsCategories.ToList();
+            var users = _managementDbContext.Users.ToList();
+            var comments = _context.Comments.ToList();
+            var likes = _context.Likes.ToList();
+            var visits = _context.Visits.ToList();
+
+
+
+
+            var news = _context.News.Include(p => p.NewsNewsCategories).Include(p => p.NewsTags).Include(p => p.NewsTags)
+                .Where(n => n.IsPublish && n.PublishDateTime <= DateTime.Now && n.NewsTags.Select(p => p.TagId).Contains(tagId))
+                .Select(p => new NewsViewModel
+                {
+                    Id = p.Id,
+                    Title = p.Title,
+                    Abstract = p.Abstract,
+                    ShortTitle = p.Title.Length > 50 ? p.Title.Substring(0, 50) + "..." : p.Title,
+                    Url = p.Url,
+                    ImageName = p.ImageName,
+                    Description = p.Description,
+                    IsPublish = p.IsPublish,
+                    AuthorName = GetUserName(p.UserId, users),
+                    PublishDateTime = p.PublishDateTime,
+                    NameOfCategories = GetCategoriesName(p.NewsNewsCategories, p.Id, newsCategories),
+                    NameOfTags = GetTagsName(p.NewsTags, p.Id, listTags),
+                    NewsType = p.IsInternal ? "داخلی" : "خارجی",
+                    Status = p.IsPublish == false
+                        ? "پیش نویس"
+                        : (p.PublishDateTime <= DateTime.Now ? "منتشر" : "انتشار در آینده"),
+                    PersianPublishDate = p.PublishDateTime.ConvertMiladiToShamsi("yyyy/MM/dd ساعت HH:mm"),
+                    NumberOfVisit = GetNumberOfVisit(p.Id, visits),
+                    NumberOfLike = GetNumberOfLike(p.Id, likes),
+                    NumberOfDisLike = GetNumberOfDisLike(p.Id, likes),
+                    NumberOfComments = GetNumberOfComments(p.Id, comments),
+
+
+
+                }).ToList();
+
+
+            news = news.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+
+            return news;
         }
 
         private static bool IsNewsBookMarked(long newsId, long? userId, List<BookMark> bookMarks)

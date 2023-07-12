@@ -1,5 +1,7 @@
-﻿using _1_NewsManagementQuery.Contracts.HomePage;
+﻿using _1_NewsManagementQuery.Contracts.CategoryOrTagInfo;
+using _1_NewsManagementQuery.Contracts.HomePage;
 using _1_NewsManagementQuery.Contracts.NewsDetail;
+using _1_NewsManagementQuery.Contracts.NewsInCategoriesAndTags;
 using _1_NewsManagementQuery.Contracts.NewsPaginate;
 using _1_NewsManagementQuery.Query;
 using Microsoft.EntityFrameworkCore;
@@ -72,6 +74,8 @@ namespace NewsManagement.Infrastructure.Configuration
 			services.AddTransient<IHomePageQuery, HomePageQuery>();
 			services.AddTransient<INewsDetailQuery, NewsDetailQuery>();
 			services.AddTransient<INewsPaginateQuery, NewsPaginateQuery>();
+			services.AddTransient<ICategoryOrTagInfoQuery, CategoryOrTagInfoQuery>();
+			services.AddTransient<INewsInCategoriesAndTagsQuery, NewsInCategoriesAndTagsQuery>();
             
 
         }
