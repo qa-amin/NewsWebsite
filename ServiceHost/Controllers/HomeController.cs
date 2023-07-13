@@ -41,7 +41,8 @@ namespace ServiceHost.Controllers
         }
 
         [Route("home/index")]
-		public IActionResult Index(string? duration, string? TypeOfNews)
+        [Route("/")]
+        public IActionResult Index(string? duration, string? TypeOfNews)
         {
 	        var isAjax = Request.Headers["X-Requested-With"] == "XMLHttpRequest";
             if (isAjax && TypeOfNews == "MostViewedNews")

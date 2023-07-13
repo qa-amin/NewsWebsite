@@ -59,6 +59,39 @@ namespace AccountManagement.Application
             return operation.Failed(massage);
         }
 
+        public OperationResult Register(CreateUser command)
+        {
+            var operation = new OperationResult();
+
+
+            var imagePath = "profilePhotos/UserPic.png";
+
+            var birthDate = DateTime.Now;
+
+
+
+            var user = new User(command.UserName, command.Email, command.PhoneNumber,
+                command.FirstName, command.LastName, birthDate,
+                imagePath, 3);
+
+
+            var roleName = _roleManager.FindByIdAsync(3.ToString()).Result;
+
+            var result = _userManager.CreateAsync(user, command.Password).Result;
+            if (result.Succeeded)
+            {
+                var userRole = _userManager.AddToRoleAsync(user, roleName.Name).Result;
+                return operation.Succeeded(ApplicationMessages.CreateUser);
+            }
+
+            var massage = "";
+            foreach (var error in result.Errors.ToList())
+            {
+                massage += error.Description + Environment.NewLine;
+            }
+            return operation.Failed(massage);
+        }
+
         public OperationResult Edit(EditUser command)
         {
             var operation = new OperationResult();

@@ -46,7 +46,7 @@ namespace ServiceHost.Areas.Admin.Controllers.Manage
         public IActionResult SignOut()
         {
             _userApplication.SignOut();
-            return RedirectToAction("Login");
+            return Redirect("/");
         }
 
         [Area("Admin")]

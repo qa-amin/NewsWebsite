@@ -43,6 +43,69 @@
 
         $("body").preloader('remove');
     });
+
+    placeholder.on('click', 'button[data-save="modal-ajax"]', function () {
+        var form;
+        var IsValid;
+        var btnId = $(this).attr('id');
+        if (btnId == "btn-register") {
+            form = $(this).parents(".modal").find('#pills-signout form');
+        }
+        else if (btnId == "btn-signin") {
+            form = $(this).parents(".modal").find('#pills-signin form');
+        }
+        else {
+            form = $(this).parents(".modal").find('form');
+        }
+
+        var actionUrl = form.attr('action');
+        var dataToSend = new FormData(form.get(0));
+        $.ajax({
+            url: actionUrl, type: "post", data: dataToSend, processData: false, contentType: false, error: function () {
+                ShowSweetErrorAlert();
+            },
+            beforeSend: function () { $('#modal-placeholder').after('<div class="preloader d-flex align-items-center justify-content-center"><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>'); },
+        }).done(function (data) {
+            if (btnId == "btn-register") {
+                $('#pills-signout').html(data);
+                IsValid = $('#pills-signout').find("input[name='IsValid']").val() === "True";
+                if (IsValid) {
+                    $.ajax({ url: '/admin/showmassage/index', error: function () { ShowSweetErrorAlert(); } }).done(function (notification) {
+                        ShowSweetSuccessAlert(notification)
+                    });
+                    placeholder.find(".modal").modal('hide');
+                }
+            }
+
+            else if (btnId == "btn-signin") {
+                if (data == "ورود با موفقیت انجام شد") {
+                    window.location.href = '/Account/Profile/';
+                }
+                else if (data == "requiresTwoFactor") {
+                    alert("requires");
+                }
+
+                else {
+                    $('#pills-signin').html($("#pills-signin", data));
+                }
+            }
+
+            else {
+                if (($(data).find(".modal-body").length) == 0) {
+                    $("#bookmarks").html(data);
+                    placeholder.find(".modal").modal('hide');
+                }
+                else {
+                    var newBody = $(".modal-body", data);
+                    var newFooter = $(".modal-footer", data);
+                    placeholder.find(".modal-body").replaceWith(newBody);
+                    placeholder.find(".modal-footer").replaceWith(newFooter);
+
+                }
+            }
+            $('.preloader').remove();
+        });
+    });
 });
 
 function ShowSweetErrorAlert() {
@@ -268,5 +331,41 @@ $(document).on('click', 'a[data-toggle="tab"]', function () {
         $(contentDivId).html(result);
         $(contentDivId + " a").removeClass("active");
         $("#" + id).addClass("active");
+    });
+});
+
+$(document).on('click', 'a[data-toggle="ajax-modal"]', function () {
+    var url = $(this).data('url');
+    $.ajax({
+        url: url,
+        beforeSend: function () { $('#modal-placeholder').after('<div class="preloader d-flex align-items-center justify-content-center"><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>'); },
+        complete: function () { $('.preloader').remove(); },
+        error: function () {
+            ShowSweetErrorAlert();
+        }
+    }).done(function (result) {
+        /*placeholder.html(result);*/
+        $("#modal-placeholder").html(result);
+       $("#modal-placeholder").find('.modal').modal('show');
+    });
+});
+
+$(document).on('click', 'a[data-toggle="ajax-load-register"]', function () {
+    var url = $(this).data('url');
+    $.ajax({
+        url: url,
+        beforeSend: function () { $('#modal-placeholder').after('<div class="preloader d-flex align-items-center justify-content-center"><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></div>'); },
+        complete: function () { $('.preloader').remove(); },
+        error: function () {
+            ShowSweetErrorAlert();
+        }
+    }).done(function (result) {
+        $("#pills-signout").html(result);
+        $("#pills-signout").addClass("active show");
+        $("#pills-signin").removeClass("active show");
+        $("#pills-signin-tab").removeClass("active  bg-danger text-white").addClass("bg-gray");
+        $("#pills-signup-tab").addClass("active  bg-danger text-white");
+        $("#modal-title").html("عضویت در سایت")
+        $(".modal-footer").html(' <button id="btn-register" type="button" class="btn btn-block btn-danger" data-save="modal-ajax"><i class="fa fa-sign-out"></i> عضویت</button>')
     });
 });

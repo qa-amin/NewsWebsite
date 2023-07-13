@@ -6,6 +6,7 @@ namespace AccountManagement.Application.Contrast.User
 	public interface IUserApplication
     {
         OperationResult Create(CreateUser command);
+        OperationResult Register(CreateUser command);
         OperationResult Edit(EditUser command);
         (OperationResult,string) EditProfile(ProfileViewModel command);
         OperationResult Delete(long id);
