@@ -9,6 +9,8 @@ using AccountManagement.Application.Contrast.User;
 using NewsManagement.Application.Contrasts.Visit;
 using _0_Framework.Application;
 using _1_NewsManagementQuery.Contracts.NewsInCategoriesAndTags;
+using _1_NewsManagementQuery.Contracts.UserBookMark;
+using NewsManagement.Application.Contrasts.BookMark;
 using NewsManagement.Application.Contrasts.Video;
 using NewsManagement.Domain.VideoAgg;
 
@@ -21,14 +23,16 @@ namespace ServiceHost.Controllers
         private readonly INewsPaginateQuery _newsPaginateQuery;
         private readonly ICategoryOrTagInfoQuery _categoryOrTagInfoQuery;
         private readonly INewsInCategoriesAndTagsQuery _newsInCategoriesAndTagsQuery;
+        private readonly IUserBookMarkQuery _userBookMarkQuery;
         private readonly IVisitApplication _visitApplication;
         private readonly IUserApplication _userApplication;
         private readonly IVideoApplication _videoApplication;
+        private readonly IBookMarkApplication _bookMarkApplication;
 
 
          
 
-        public HomeController(IHomePageQuery homePageQuery, INewsDetailQuery newsDetailQuery, IVisitApplication visitApplication, IUserApplication userApplication, INewsPaginateQuery newsPaginateQuery, ICategoryOrTagInfoQuery categoryOrTagInfoQuery, INewsInCategoriesAndTagsQuery newsInCategoriesAndTagsQuery, IVideoApplication videoApplication)
+        public HomeController(IHomePageQuery homePageQuery, INewsDetailQuery newsDetailQuery, IVisitApplication visitApplication, IUserApplication userApplication, INewsPaginateQuery newsPaginateQuery, ICategoryOrTagInfoQuery categoryOrTagInfoQuery, INewsInCategoriesAndTagsQuery newsInCategoriesAndTagsQuery, IVideoApplication videoApplication, IUserBookMarkQuery userBookMarkQuery, IBookMarkApplication bookMarkApplication)
         {
             _homePageQuery = homePageQuery;
             _newsDetailQuery = newsDetailQuery;
@@ -38,6 +42,8 @@ namespace ServiceHost.Controllers
             _categoryOrTagInfoQuery = categoryOrTagInfoQuery;
             _newsInCategoriesAndTagsQuery = newsInCategoriesAndTagsQuery;
             _videoApplication = videoApplication;
+            _userBookMarkQuery = userBookMarkQuery;
+            _bookMarkApplication = bookMarkApplication;
         }
 
         [Route("home/index")]
@@ -151,8 +157,36 @@ namespace ServiceHost.Controllers
                     return View(video);
             }
         }
+        [Route("/home/profile")]
+        public IActionResult Profile()
+        {
+            var userId = _userApplication.GetUser(User).Id;
+            var newsBookMarked = _userBookMarkQuery.GetBookMark(userId);
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+            return View(newsBookMarked);
+        }
+        [HttpGet]
+        public IActionResult DeleteBookmark(long newsId)
+        {
+	        var userId = _userApplication.GetUser(User).Id;
+	        var bookMark = _bookMarkApplication.GetBookMark(newsId, userId);
+
+	        return PartialView("_DeleteBookmark",bookMark);
+        }
+        [HttpPost]
+        public IActionResult DeleteBookmark(DeleteBookMark command)
+        {
+	        var result = _bookMarkApplication.Delete(command);
+	        if (result.IsSucceeded)
+	        {
+		        var newsBookMarked = _userBookMarkQuery.GetBookMark(command.UserId);
+				return PartialView("_Bookmarks",newsBookMarked.Bookmarks );
+	        }
+
+	        return PartialView("_DeleteBookmark");
+        }
+
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
 		{
 			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

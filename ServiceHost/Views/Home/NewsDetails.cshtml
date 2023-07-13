@@ -98,10 +98,14 @@
                                     <a href="#"><i class="fa fa-comments-o" aria-hidden="true"></i> @Model.News.NumberOfComments</a>
                                     <a href="#"><i class="fa fa-eye" aria-hidden="true"></i> @Model.News.NumberOfVisit</a>
                                     <a onclick="LikeOrDisLike('@Model.News.Id',true)"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> <span id="like">@Model.News.NumberOfLike</span></a>
-                                    <a onclick="LikeOrDisLike('@Model.News.Id', false)"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> <span id="dislike">@Model.News.NumberOfDisLike</span></a>
-                                    <a onclick="Bookmark('@Model.News.Id')" id="bookmark">
-                                        <i class="fa @(Model.News.IsBookmarked?"fa-bookmark":"fa-bookmark-o")" aria-hidden='true'></i>
-                                    </a>
+	                                <a onclick="LikeOrDisLike('@Model.News.Id', false)"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> <span id="dislike">@Model.News.NumberOfDisLike</span></a>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+	                                    <a onclick="Bookmark('@Model.News.Id')" id="bookmark">
+		                                    <i class="fa @(Model.News.IsBookmarked?"fa-bookmark":"fa-bookmark-o")" aria-hidden='true'></i>
+	                                    </a>
+                                    }
+                                   
                                 </div>
                             </div>
                         </div>

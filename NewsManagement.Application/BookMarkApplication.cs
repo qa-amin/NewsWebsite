@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using _0_Framework.Application;
 using NewsManagement.Application.Contrasts.BookMark;
 using NewsManagement.Domain.BookMarkAgg;
 
@@ -32,6 +33,31 @@ namespace NewsManagement.Application
 				_bookMarkRepository.Delete(bookMark);
 				_bookMarkRepository.SaveChanges();
 			}
+		}
+
+		public OperationResult Delete(DeleteBookMark command)
+		{
+			var operation = new OperationResult();
+			var bookMark = _bookMarkRepository.GetBookMark(command.NewsId, command.UserId);
+			if (bookMark == null)
+			{
+				return operation.Failed(ApplicationMessages.RecordNotFound);
+			}
+
+			_bookMarkRepository.Delete(bookMark);
+			_bookMarkRepository.SaveChanges();
+
+			return operation.Succeeded();
+		}
+
+		public DeleteBookMark GetBookMark(long newsId, long userId)
+		{
+			var bookMark = _bookMarkRepository.GetBookMark(newsId, userId);
+			return new DeleteBookMark()
+			{
+				UserId = userId,
+				NewsId = newsId,
+			};
 		}
 	}
 }

@@ -9,7 +9,7 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <form asp-action="SignOut" asp-controller="Manage">
+    <form asp-action="SignOut" asp-controller="Manage" asp-area="Admin">
         <button type="submit" class="btn btn-link mr-2">
             <i class="ni ni-user-run"></i> خروج
         </button>

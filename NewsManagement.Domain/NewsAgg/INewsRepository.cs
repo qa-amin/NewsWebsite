@@ -27,6 +27,7 @@ namespace NewsManagement.Domain.NewsAgg
         List<NewsViewModel> GetNextAndPreviousNews(DateTime? publishDateTime, long? userId);
         List<NewsViewModel> GetNewsinCategory(int categoryId, int pageIndex, int pageSize);
         List<NewsViewModel> GetNewsinTag(long tagId, int pageIndex, int pageSize);
+        List<NewsViewModel> GetBookMark(long userId);
 
         long CountNewsPublished();
     }

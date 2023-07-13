@@ -3,6 +3,7 @@ using _1_NewsManagementQuery.Contracts.HomePage;
 using _1_NewsManagementQuery.Contracts.NewsDetail;
 using _1_NewsManagementQuery.Contracts.NewsInCategoriesAndTags;
 using _1_NewsManagementQuery.Contracts.NewsPaginate;
+using _1_NewsManagementQuery.Contracts.UserBookMark;
 using _1_NewsManagementQuery.Query;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -76,6 +77,7 @@ namespace NewsManagement.Infrastructure.Configuration
 			services.AddTransient<INewsPaginateQuery, NewsPaginateQuery>();
 			services.AddTransient<ICategoryOrTagInfoQuery, CategoryOrTagInfoQuery>();
 			services.AddTransient<INewsInCategoriesAndTagsQuery, NewsInCategoriesAndTagsQuery>();
+			services.AddTransient<IUserBookMarkQuery, UserBookMarkQuery>();
             
 
         }

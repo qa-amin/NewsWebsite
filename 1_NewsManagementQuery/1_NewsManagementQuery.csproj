@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AccountManagement.Domain\AccountManagement.Domain.csproj" />
     <ProjectReference Include="..\NewsManagement.Application.Contrasts\NewsManagement.Application.Contrasts.csproj" />
     <ProjectReference Include="..\NewsManagement.Domain\NewsManagement.Domain.csproj" />
   </ItemGroup>

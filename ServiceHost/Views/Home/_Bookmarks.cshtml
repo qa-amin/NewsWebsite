@@ -1,0 +1,31 @@
+﻿@model List<NewsManagement.Application.Contrasts.News.NewsViewModel>
+
+<div class="profile-feed row">
+    @if (Model.Count() != 0)
+    {
+        @foreach (var item in Model)
+        {
+            <div class="profile-activity clearfix">
+                <div>
+                    <a href="~/News/@item.Id/@item.Url"> @item.Title</a>
+
+                    <div class="time">
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        @item.PersianPublishDate
+                    </div>
+                </div>
+
+                <div class="tools action-buttons">
+                    <a href="#" data-toggle="ajax-modal" data-url="@Url.Action("DeleteBookmark","Home",new {newsId=item.Id})">
+                        <i class="ace-icon fa fa-times text-danger"></i>
+                    </a>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p class="alert alert-info w-100 text-center">هیچ خبری بوکمارک نشده است.</p>
+    }
+
+</div>
