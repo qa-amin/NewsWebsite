@@ -287,6 +287,31 @@ namespace NewsManagement.Application
 	        return _newsRepository.NumberOfLikeAndDisLike(newsId);
         }
 
+        public long GetPublished()
+        {
+            return _newsRepository.CountNewsPublished();
+        }
+
+        public long CountNews()
+        {
+            return _newsRepository.CountNews();
+        }
+
+        public long CountFuturePublish()
+        {
+            return _newsRepository.CountFuturePublish();
+        }
+
+        public long CountNewsUnPublished()
+        {
+            return _newsRepository.CountNewsUnPublished();
+        }
+
+        public long NumberOfVisit(DateTime startDateTimeMiladi, DateTime endDateTimeMiladi)
+        {
+            return _newsRepository.NumberOfVisit(startDateTimeMiladi, endDateTimeMiladi);
+        }
+
         private List<long> getNewsTagsId(string tags)
         {
             var tagArray = tags.Split(",");

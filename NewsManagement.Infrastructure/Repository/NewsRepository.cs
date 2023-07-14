@@ -761,6 +761,28 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
             return numOfPublishedNews;
         }
 
+        public long CountNewsUnPublished()
+        {
+            var numOfUnPublishedNews = _context.News.Where(p => !p.IsPublish).LongCount();
+            return numOfUnPublishedNews;
+        }
+
+        public long CountNews()
+        {
+            return _context.News.LongCount();
+        }
+
+        public long CountFuturePublish()
+        {
+            var news = _context.News.Where(p => p.PublishDateTime > DateTime.Now).LongCount();
+            return news;
+        }
+
+        public long NumberOfVisit(DateTime startDateTimeMiladi, DateTime endDateTimeMiladi)
+        {
+            return _context.News.Where(n => n.PublishDateTime < endDateTimeMiladi && startDateTimeMiladi <= n.PublishDateTime).Include(v => v.Visits).Select(k => k.Visits.Sum(v => v.NumberOfVisit)).AsEnumerable().Sum();
+        }
+
         private static string GetUserName(long userId, List<User> users)
         {
             var user = users.FirstOrDefault(p => p.Id == userId);

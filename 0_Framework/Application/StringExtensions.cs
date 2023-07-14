@@ -6,7 +6,11 @@
         {
             return ignoreWhiteSpace ? !string.IsNullOrWhiteSpace(value) : !string.IsNullOrEmpty(value);
         }
-
+        public static string[] GetMonth()
+        {
+            string[] month = { "فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند" };
+            return month;
+        }
         public static int ToInt(this string value)
         {
             return Convert.ToInt32(value);

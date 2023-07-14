@@ -32,5 +32,13 @@ namespace NewsManagement.Domain.NewsAgg
         NewsViewModel NumberOfLikeAndDisLike(long newsId);
 
         long CountNewsPublished();
+        long CountNewsUnPublished();
+
+        long CountNews();
+
+        long CountFuturePublish();
+
+
+        long NumberOfVisit(DateTime startDateTimeMiladi, DateTime endDateTimeMiladi);
     }
 }
