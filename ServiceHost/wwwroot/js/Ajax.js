@@ -194,7 +194,7 @@ function ActiveOrInActiveNewsletter(email) {
 }
 function ConfigureSettings(id, action) {
     $.ajax({
-        url: "/Admin/UserManager/" + action + "?userId=" + id,
+        url: "/admin/user/" + action + "?id=" + id,
         beforeSend: function () { ShowLoading(); },
         complete: function () { $("body").preloader('remove'); },
         type: "get",

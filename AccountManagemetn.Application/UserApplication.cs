@@ -251,8 +251,8 @@ namespace AccountManagement.Application
         public OperationResult ChangePssword(ChangePass command, User user)
         {
             var operation = new OperationResult();
-            _userManager.RemovePasswordAsync(user);
-           var result =  _userManager.AddPasswordAsync(user, command.NewPassword).Result;
+           var result = _userManager.RemovePasswordAsync(user).Result;
+            result =  _userManager.AddPasswordAsync(user, command.NewPassword).Result;
            if (result.Succeeded)
            {
                return operation.Succeeded(ApplicationMessages.ChangPass);
@@ -263,6 +263,23 @@ namespace AccountManagement.Application
                massage += error.Description + Environment.NewLine;
            }
            return operation.Failed(massage);
+        }
+
+        public OperationResult ResetPass(ResetPass command, User user)
+        {
+            var operation = new OperationResult();
+            var result = _userManager.RemovePasswordAsync(user).Result;
+            result = _userManager.AddPasswordAsync(user, command.NewPassword).Result;
+            if (result.Succeeded)
+            {
+                return operation.Succeeded(ApplicationMessages.ChangPass);
+            }
+            var massage = "";
+            foreach (var error in result.Errors.ToList())
+            {
+                massage += error.Description + Environment.NewLine;
+            }
+            return operation.Failed(massage);
         }
 
         public void SignOut()
@@ -405,6 +422,41 @@ namespace AccountManagement.Application
 
             };
             return (proUser) ;
+        }
+
+        public UserViewModel GetUserInfo(long userId)
+        {
+            var user = _userManager.Users.Include(p => p.Roles)
+                .FirstOrDefault(p => p.Id == userId);
+
+            var userRoleName = _roleManager.FindByIdAsync(user.Roles.Select(p => p.RoleId).FirstOrDefault().ToString()).Result.Name;
+
+            return new UserViewModel
+            {
+                AccessFailedCount = user.AccessFailedCount,
+                BirthDate = user.BirthDate,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                UserName = user.UserName,
+                PhoneNumber = user.PhoneNumber,
+                EmailConfirmed = user.EmailConfirmed,
+                Gender = user.Gender == 1 ? "مرد" : "زن",
+                Image = user.Image,
+                Id = user.Id,
+                RoleName = userRoleName,
+                IsActive = user.IsActive,
+                LockoutEnabled = user.LockoutEnabled,
+                LockoutEnd = user.LockoutEnd,
+                PersianBirthDate = user.BirthDate.ConvertMiladiToShamsi("yyyy/MM/dd"),
+                PersianRegisterDateTime = user.RegisterDateTime.ConvertMiladiToShamsi("yyyy/MM/dd"),
+                PhoneNumberConfirmed = user.PhoneNumberConfirmed,
+                RegisterDateTime = user.RegisterDateTime,
+                RoleId = user.Roles.Select(p => p.RoleId).FirstOrDefault(),
+                TwoFactorEnabled = user.TwoFactorEnabled,
+
+
+            };
         }
 
         private List<UserViewModel> GetPaginateUsers(int offset, int limit, string orderBy, string searchText)

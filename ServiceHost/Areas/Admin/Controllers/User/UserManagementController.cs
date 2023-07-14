@@ -1,6 +1,8 @@
 ﻿using AccountManagement.Application.Contrast.Role;
 using AccountManagement.Application.Contrast.User;
 using AccountManagement.Domain.RoleAgg;
+using AccountManagement.Domain.UserAgg;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NewsManagement.Application;
 using NewsManagement.Application.Contrasts.NewsCategory;
@@ -12,11 +14,13 @@ namespace ServiceHost.Areas.Admin.Controllers.User
     {
         private readonly IUserApplication _userApplication;
         private readonly IRoleApplication _roleApplication;
+        private readonly UserManager<AccountManagement.Domain.UserAgg.User> _userManager;
 
-        public UserManagementController(IUserApplication userApplication, IRoleApplication roleApplication)
+        public UserManagementController(IUserApplication userApplication, IRoleApplication roleApplication, UserManager<AccountManagement.Domain.UserAgg.User> userManager)
         {
             _userApplication = userApplication;
             _roleApplication = roleApplication;
+            _userManager = userManager;
         }
 
         [Area("admin")]
@@ -151,8 +155,228 @@ namespace ServiceHost.Areas.Admin.Controllers.User
 
 
         }
-       
+        [Area("admin")]
+        [Route("admin/user/Details")]
+        public IActionResult Details(long Id)
+        {
+            var user = _userApplication.GetUserInfo(Id);
+	        return View(user);
+        }
 
 
+        [Area("Admin")]
+        [Route("admin/user/ResetPass")]
+        [HttpGet]
+        public IActionResult ResetPass(long userId)
+        {
+
+
+            return View(new ResetPass()
+            {
+                UserId = userId
+            });
+        }
+
+        [Area("Admin")]
+        [Route("admin/user/ResetPass")]
+        [HttpPost]
+        public IActionResult ResetPass(ResetPass command)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = _userManager.FindByIdAsync(command.UserId.ToString()).Result;
+
+                var result = _userApplication.ResetPass(command, user);
+                if (result.IsSucceeded)
+                {
+                    ViewBag.Alert = result.Message;
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, result.Message);
+                }
+
+
+            }
+
+            return View(command);
+        }
+
+        [Area("Admin")]
+        [Route("admin/user/ChangeEmailConfirmed")]
+        [HttpGet]
+        public IActionResult ChangeEmailConfirmed(long id)
+        {
+            var user =  _userManager.FindByIdAsync(id.ToString()).Result;
+            string ResultJsonData;
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if (user.EmailConfirmed)
+            {
+                ResultJsonData = "تایید نشده";
+                user.EmailConfirmed = false;
+            }
+
+            else
+            {
+                user.EmailConfirmed = true;
+                ResultJsonData = "تایید شده";
+            }
+
+            var result =  _userManager.UpdateAsync(user).Result;
+            return Json(ResultJsonData);
+        }
+        [Area("Admin")]
+        [Route("admin/user/ChangeTwoFactorEnabled")]
+        [HttpGet]
+        public IActionResult ChangeTwoFactorEnabled(long id)
+        {
+            var user =  _userManager.FindByIdAsync(id.ToString()).Result;
+            string ResultJsonData;
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if (user.TwoFactorEnabled)
+            {
+                user.TwoFactorEnabled = false;
+                ResultJsonData = "غیرفعال";
+            }
+
+            else
+            {
+                user.TwoFactorEnabled = true;
+                ResultJsonData = "فعال";
+            }
+
+            var result = _userManager.UpdateAsync(user).Result;
+            return Json(ResultJsonData);
+        }
+
+        [Area("Admin")]
+        [Route("admin/user/ChangeLockOutEnable")]
+        [HttpGet]
+
+        public IActionResult ChangeLockOutEnable(long id)
+        {
+            var user =  _userManager.FindByIdAsync(id.ToString()).Result;
+            string ResultJsonData;
+            if (user == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                if (user.LockoutEnabled)
+                {
+                    user.LockoutEnabled = false;
+                    ResultJsonData = "غیرفعال";
+                }
+
+                else
+                {
+                    user.LockoutEnabled = true;
+                    ResultJsonData = "فعال";
+                }
+
+                var result =  _userManager.UpdateAsync(user);
+                return Json(ResultJsonData);
+            }
+        }
+
+        [Area("Admin")]
+        [Route("admin/user/InActiveOrActiveUser")]
+        [HttpGet]
+        public  IActionResult InActiveOrActiveUser(long id)
+        {
+            var user =  _userManager.FindByIdAsync(id.ToString()).Result;
+            string ResultJsonData;
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if (user.IsActive)
+            {
+                user.DeActive();
+                ResultJsonData = "غیرفعال";
+            }
+
+            else
+            {
+                user.Active();
+                ResultJsonData = "فعال";
+            }
+
+             var result = _userManager.UpdateAsync(user).Result;
+            return Json(ResultJsonData);
+        }
+        [Area("Admin")]
+        [Route("admin/user/ChangePhoneNumberConfirmed")]
+        [HttpGet]
+        public  IActionResult ChangePhoneNumberConfirmed(long id)
+        {
+            var user =  _userManager.FindByIdAsync(id.ToString()).Result;
+            string ResultJsonData;
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if (user.PhoneNumberConfirmed)
+            {
+                ResultJsonData = "تایید نشده";
+                user.PhoneNumberConfirmed = false;
+            }
+
+            else
+            {
+                ResultJsonData = "تایید شده";
+                user.PhoneNumberConfirmed = true;
+            }
+
+            var result =  _userManager.UpdateAsync(user).Result;
+            return Json(ResultJsonData);
+        }
+
+        [Area("Admin")]
+        [Route("admin/user/LockOrUnLockUserAccount")]
+        [HttpGet]
+        public IActionResult LockOrUnLockUserAccount(long Id)
+        {
+            var user =  _userManager.FindByIdAsync(Id.ToString()).Result;
+            string ResultJsonData;
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if (user.LockoutEnd == null)
+            {
+                ResultJsonData = "قفل شده";
+                user.LockoutEnd = DateTimeOffset.UtcNow.AddMinutes(20);
+            }
+
+            else
+            {
+                if (user.LockoutEnd > DateTime.Now)
+                {
+                    ResultJsonData = "قفل نشده";
+                    user.LockoutEnd = null;
+                }
+                else
+                {
+                    ResultJsonData = "قفل شده";
+                    user.LockoutEnd = DateTimeOffset.UtcNow.AddMinutes(20);
+                }
+            }
+
+            var result =  _userManager.UpdateAsync(user).Result;
+            return Json(ResultJsonData);
+        }
     }
 }

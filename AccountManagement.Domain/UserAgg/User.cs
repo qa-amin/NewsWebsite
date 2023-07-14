@@ -67,6 +67,17 @@ namespace AccountManagement.Domain.UserAgg
             IsRemove = true;
             RemoveDate = DateTime.Now;
         }
+
+        public void Active()
+        {
+            IsActive = true;
+            UpdateDate = DateTime.Now;
+        }
+        public void DeActive()
+        {
+            IsActive = false;
+            UpdateDate = DateTime.Now;
+        }
     }
 	
 }

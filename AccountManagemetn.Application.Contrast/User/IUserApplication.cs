@@ -12,6 +12,7 @@ namespace AccountManagement.Application.Contrast.User
         OperationResult Delete(long id);
         OperationResult Login(Login command);
         OperationResult ChangePssword(ChangePass command, Domain.UserAgg.User user);
+        OperationResult ResetPass(ResetPass command, Domain.UserAgg.User user);
         void SignOut();
         (List<UserViewModel>, long) Search(UserSearchModel searchModel);
 
@@ -20,6 +21,8 @@ namespace AccountManagement.Application.Contrast.User
         EditUser GetDetail(long id);
         Domain.UserAgg.User GetUser(ClaimsPrincipal command);
         ProfileViewModel GetProfileDetail( long id);
+
+        UserViewModel GetUserInfo(long userId);
 
 
     }

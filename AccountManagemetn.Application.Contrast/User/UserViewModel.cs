@@ -7,7 +7,7 @@ namespace AccountManagement.Application.Contrast.User
 	public class UserViewModel
 	{
 		[JsonPropertyName("Id")]
-		public long? Id { get; set; }
+		public long Id { get; set; }
 
 		[JsonPropertyName("ردیف")]
 		public int Row { get; set; }
