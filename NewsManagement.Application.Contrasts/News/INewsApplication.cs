@@ -22,5 +22,7 @@ namespace NewsManagement.Application.Contrasts.News
         void RemoveNewsTagRecords(long newsId);
         void RemoveNewsNewsCategoryRecords(long newsId);
 
+        NewsViewModel NumberOfLikeAndDisLike(long newsId);
+
     }
 }

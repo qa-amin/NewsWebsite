@@ -709,6 +709,20 @@ namespace NewsManagement.Infrastructure.EFCore.Repository
             return news;
         }
 
+        public NewsViewModel NumberOfLikeAndDisLike(long newsId)
+        {
+	        var news = _context.News.Include(p => p.Likes)
+		        .Where(p => p.Likes.Select(l => l.NewsId).Contains(newsId))
+		        .Select(p => new NewsViewModel
+		        {
+			        NumberOfLike = p.Likes.Sum(l => l.IsLiked ? 1 : 0),
+			        NumberOfDisLike = p.Likes.Sum(l => !l.IsLiked ? 1 : 0)
+		        }).FirstOrDefault();
+
+
+	        return news;
+        }
+
         private static bool IsNewsBookMarked(long newsId, long? userId, List<BookMark> bookMarks)
         {
            return bookMarks.Any(p => p.UserId == userId && p.NewsId == newsId);

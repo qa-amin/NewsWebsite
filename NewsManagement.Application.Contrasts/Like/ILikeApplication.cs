@@ -9,5 +9,6 @@ namespace NewsManagement.Application.Contrasts.Like
 	public interface ILikeApplication
 	{
 		void LikeOrDisLike(long newsId,bool isLike);
+		
 	}
 }

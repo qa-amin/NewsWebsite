@@ -9,7 +9,7 @@ namespace NewsManagement.Application.Contrasts.BookMark
 {
 	public interface IBookMarkApplication
 	{
-		void BookMarkNews(long newsId, long userId);
+		bool BookMarkNews(long newsId, long userId);
 		OperationResult Delete(DeleteBookMark command);
 
 		DeleteBookMark GetBookMark(long newsId, long userId);

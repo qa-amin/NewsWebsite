@@ -282,6 +282,11 @@ namespace NewsManagement.Application
             _newsNewsCategoryRepository.RemoveRange(newsTag);
         }
 
+        public NewsViewModel NumberOfLikeAndDisLike(long newsId)
+        {
+	        return _newsRepository.NumberOfLikeAndDisLike(newsId);
+        }
+
         private List<long> getNewsTagsId(string tags)
         {
             var tagArray = tags.Split(",");

@@ -29,6 +29,8 @@ namespace NewsManagement.Domain.NewsAgg
         List<NewsViewModel> GetNewsinTag(long tagId, int pageIndex, int pageSize);
         List<NewsViewModel> GetBookMark(long userId);
 
+        NewsViewModel NumberOfLikeAndDisLike(long newsId);
+
         long CountNewsPublished();
     }
 }

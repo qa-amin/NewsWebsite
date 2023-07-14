@@ -11,6 +11,8 @@ using _0_Framework.Application;
 using _1_NewsManagementQuery.Contracts.NewsInCategoriesAndTags;
 using _1_NewsManagementQuery.Contracts.UserBookMark;
 using NewsManagement.Application.Contrasts.BookMark;
+using NewsManagement.Application.Contrasts.Like;
+using NewsManagement.Application.Contrasts.News;
 using NewsManagement.Application.Contrasts.Video;
 using NewsManagement.Domain.VideoAgg;
 
@@ -28,11 +30,12 @@ namespace ServiceHost.Controllers
         private readonly IUserApplication _userApplication;
         private readonly IVideoApplication _videoApplication;
         private readonly IBookMarkApplication _bookMarkApplication;
+        private readonly ILikeApplication _likeApplication;
+        private readonly INewsApplication _newsApplication;
 
 
-         
 
-        public HomeController(IHomePageQuery homePageQuery, INewsDetailQuery newsDetailQuery, IVisitApplication visitApplication, IUserApplication userApplication, INewsPaginateQuery newsPaginateQuery, ICategoryOrTagInfoQuery categoryOrTagInfoQuery, INewsInCategoriesAndTagsQuery newsInCategoriesAndTagsQuery, IVideoApplication videoApplication, IUserBookMarkQuery userBookMarkQuery, IBookMarkApplication bookMarkApplication)
+        public HomeController(IHomePageQuery homePageQuery, INewsDetailQuery newsDetailQuery, IVisitApplication visitApplication, IUserApplication userApplication, INewsPaginateQuery newsPaginateQuery, ICategoryOrTagInfoQuery categoryOrTagInfoQuery, INewsInCategoriesAndTagsQuery newsInCategoriesAndTagsQuery, IVideoApplication videoApplication, IUserBookMarkQuery userBookMarkQuery, IBookMarkApplication bookMarkApplication, ILikeApplication likeApplication, INewsApplication newsApplication)
         {
             _homePageQuery = homePageQuery;
             _newsDetailQuery = newsDetailQuery;
@@ -44,6 +47,8 @@ namespace ServiceHost.Controllers
             _videoApplication = videoApplication;
             _userBookMarkQuery = userBookMarkQuery;
             _bookMarkApplication = bookMarkApplication;
+            _likeApplication = likeApplication;
+            _newsApplication = newsApplication;
         }
 
         [Route("home/index")]
@@ -185,7 +190,27 @@ namespace ServiceHost.Controllers
 
 	        return PartialView("_DeleteBookmark");
         }
+        [HttpGet]
+        public JsonResult LikeOrDisLike(long newsId, bool isLike)
+        {
+            _likeApplication.LikeOrDisLike(newsId,isLike);
+            var likeAndDislike = _newsApplication.NumberOfLikeAndDisLike(newsId);
 
+			return Json(new { like = likeAndDislike.NumberOfLike, dislike = likeAndDislike.NumberOfDisLike });
+        }
+        public JsonResult BookmarkNews(long newsId)
+        {
+	        var userId = _userApplication.GetUser(User).Id;
+			var result =_bookMarkApplication.BookMarkNews(newsId, userId);
+			if (result)
+				return Json(true);
+			else
+			{
+				return Json(false);
+			}
+
+
+        }
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 		public IActionResult Error()
 		{

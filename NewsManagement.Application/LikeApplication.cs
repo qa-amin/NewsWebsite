@@ -36,5 +36,7 @@ namespace NewsManagement.Application
 				like.IsLike(isLike);
 			}
 		}
+
+		
 	}
 }

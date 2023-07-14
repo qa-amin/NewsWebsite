@@ -19,7 +19,7 @@ namespace NewsManagement.Application
 			_bookMarkRepository = bookMarkRepository;
 		}
 
-		public void BookMarkNews(long newsId, long userId)
+		public bool BookMarkNews(long newsId, long userId)
 		{
 			var bookMark = _bookMarkRepository.GetBookMark(newsId, userId);
 			if (bookMark == null)
@@ -27,11 +27,13 @@ namespace NewsManagement.Application
 				var newBookMark = new BookMark(newsId, userId);
 				_bookMarkRepository.Create(newBookMark);
 				_bookMarkRepository.SaveChanges();
+				return true;
 			}
 			else
 			{
 				_bookMarkRepository.Delete(bookMark);
 				_bookMarkRepository.SaveChanges();
+				return false;
 			}
 		}
 
