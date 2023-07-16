@@ -15,6 +15,7 @@ using NewsManagement.Application.Contrasts.Like;
 using NewsManagement.Application.Contrasts.News;
 using NewsManagement.Application.Contrasts.Video;
 using NewsManagement.Domain.VideoAgg;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ServiceHost.Controllers
 {
@@ -123,7 +124,7 @@ namespace ServiceHost.Controllers
 
         [Route("home/GetNewsInCategoryAndTag")]
         [HttpGet]
-        public async Task<ActionResult> GetNewsInCategoryAndTag(int pageIndex, int pageSize, int categoryId, long tagId)
+        public IActionResult GetNewsInCategoryAndTag(int pageIndex, int pageSize, int categoryId, long tagId)
         {
 
             if (categoryId != 0)
@@ -149,7 +150,7 @@ namespace ServiceHost.Controllers
 
 
         [Route("Video/{videoId}")]
-        public async Task<IActionResult> VideoDetails(long videoId)
+        public IActionResult VideoDetails(long videoId)
         {
             if (videoId == 0)
                 return NotFound();
@@ -162,6 +163,7 @@ namespace ServiceHost.Controllers
                     return View(video);
             }
         }
+        [Authorize(Policy = "WebsiteUser")]
         [Route("/home/profile")]
         public IActionResult Profile()
         {
@@ -170,6 +172,7 @@ namespace ServiceHost.Controllers
 
             return View(newsBookMarked);
         }
+        [Authorize(Policy = "WebsiteUser")]
         [HttpGet]
         public IActionResult DeleteBookmark(long newsId)
         {
@@ -178,6 +181,7 @@ namespace ServiceHost.Controllers
 
 	        return PartialView("_DeleteBookmark",bookMark);
         }
+        [Authorize(Policy = "WebsiteUser")]
         [HttpPost]
         public IActionResult DeleteBookmark(DeleteBookMark command)
         {
@@ -198,6 +202,7 @@ namespace ServiceHost.Controllers
 
 			return Json(new { like = likeAndDislike.NumberOfLike, dislike = likeAndDislike.NumberOfDisLike });
         }
+        [Authorize(Policy = "WebsiteUser")]
         public JsonResult BookmarkNews(long newsId)
         {
 	        var userId = _userApplication.GetUser(User).Id;

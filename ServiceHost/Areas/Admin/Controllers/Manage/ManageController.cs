@@ -1,10 +1,12 @@
 ﻿using AccountManagement.Application.Contrast.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ServiceHost.Areas.Admin.Controllers.Manage
 {
-	public class ManageController : Controller
+    [Authorize(Policy = "WebsiteUser")]
+    public class ManageController : Controller
     {
         private readonly IUserApplication _userApplication;
         private readonly UserManager<AccountManagement.Domain.UserAgg.User> _userManager;
@@ -14,7 +16,7 @@ namespace ServiceHost.Areas.Admin.Controllers.Manage
             _userApplication = userApplication;
             _userManager = userManager;
         }
-
+        [AllowAnonymous]
         [Area("admin")]
         [Route("admin/manage/Login")]
         [HttpGet]
@@ -23,7 +25,7 @@ namespace ServiceHost.Areas.Admin.Controllers.Manage
             return View();
         }
 
-
+        [AllowAnonymous]
         [Area("admin")]
         [Route("admin/manage/Login")]
         [HttpPost]

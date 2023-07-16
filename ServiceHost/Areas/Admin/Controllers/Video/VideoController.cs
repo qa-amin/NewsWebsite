@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NewsManagement.Application.Contrasts.Tag;
 using NewsManagement.Application.Contrasts.Video;
 using Newtonsoft.Json;
 
 namespace ServiceHost.Areas.Admin.Controllers.Video
 {
+    [Authorize(Policy = "Administration")]
     public class VideoController : Controller
     {
         private readonly IVideoApplication _videoApplication;

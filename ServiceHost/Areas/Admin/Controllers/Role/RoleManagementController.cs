@@ -1,4 +1,5 @@
 ﻿using AccountManagement.Application.Contrast.Role;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using Newtonsoft.Json;
 
 namespace ServiceHost.Areas.Admin.Controllers.Role
 {
+    [Authorize(Policy = "Administration")]
     public class RoleManagementController : Controller
     {
         private readonly IRoleApplication _roleApplication;

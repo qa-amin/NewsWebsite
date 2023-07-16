@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NewsManagement.Application.Contrasts.News;
 using NewsManagement.Application.Contrasts.NewsCategory;
@@ -8,6 +9,7 @@ using Newtonsoft.Json;
 
 namespace ServiceHost.Areas.Admin.Controllers.News
 {
+    [Authorize(Policy = "Administration")]
     public class NewsController : Controller
     {
         private readonly INewsApplication _newsApplication;

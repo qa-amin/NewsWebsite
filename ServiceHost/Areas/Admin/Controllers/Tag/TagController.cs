@@ -1,11 +1,13 @@
 ﻿using AccountManagement.Application;
 using AccountManagement.Application.Contrast.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NewsManagement.Application.Contrasts.Tag;
 using Newtonsoft.Json;
 
 namespace ServiceHost.Areas.Admin.Controllers.Tag
 {
+    [Authorize(Policy = "Administration")]
     public class TagController : Controller
     {
         private readonly ITagApplication _tagApplication;

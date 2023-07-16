@@ -2,6 +2,7 @@
 using AccountManagement.Application.Contrast.User;
 using AccountManagement.Domain.RoleAgg;
 using AccountManagement.Domain.UserAgg;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NewsManagement.Application;
@@ -10,7 +11,8 @@ using Newtonsoft.Json;
 
 namespace ServiceHost.Areas.Admin.Controllers.User
 {
-	public class UserManagementController : Controller
+    [Authorize(Policy = "Administration")]
+    public class UserManagementController : Controller
     {
         private readonly IUserApplication _userApplication;
         private readonly IRoleApplication _roleApplication;

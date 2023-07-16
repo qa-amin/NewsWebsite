@@ -1,4 +1,5 @@
 ﻿using AccountManagement.Application.Contrast.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -36,6 +37,8 @@ namespace ServiceHost.Controllers
             }
             return PartialView("_SignIn");
         }
+
+        [Authorize(Policy = "WebsiteUser")]
 
         public  IActionResult Profile()
         {

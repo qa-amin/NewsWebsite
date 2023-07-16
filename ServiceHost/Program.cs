@@ -1,4 +1,4 @@
-using _0_Framework.Application;
+﻿using _0_Framework.Application;
 using _0_Framework.Infrastructure;
 using AccountManagement.Domain.RoleAgg;
 using AccountManagement.Domain.UserAgg;
@@ -27,18 +27,20 @@ builder.Services.AddIdentity<User, Role>()
 builder.Services.ConfigureApplicationCookie(options =>
 {
 	options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
-	options.LoginPath = "/account/login";
+	options.LoginPath = "/admin/manage/Login";
+    options.LogoutPath = "/admin/manage/Login";
+    options.AccessDeniedPath = "/admin/AccessDenied";
 });
 
 builder.Services.AddTransient<IFileUploader, FileUploader>();
 
 builder.Services.AddAuthorization(options =>
 {
-	options.AddPolicy("AdminArea",
-		builder => builder.RequireRole(new List<string> { Roles.Administrator, Roles.ContentUploader }));
+	options.AddPolicy("WebsiteUser",
+		builder => builder.RequireRole(new List<string> { "کاربر سیستم", "مدیر سیستم" }));
 
 	options.AddPolicy("Administration",
-		builder => builder.RequireRole(new List<string> { Roles.Administrator }));
+		builder => builder.RequireRole(new List<string> { "مدیر سیستم" }));
 });
 var app = builder.Build();
 

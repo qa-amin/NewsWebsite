@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NewsManagement.Application.Contrasts.NewsLetter;
 using Newtonsoft.Json;
 
 namespace ServiceHost.Areas.Admin.Controllers.NewsLetter
 {
-	public class NewsLetterController : Controller
+    [Authorize(Policy = "Administration")]
+    public class NewsLetterController : Controller
 	{
 		private readonly INewsLetterApplication _newsLetterApplication;
 

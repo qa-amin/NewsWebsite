@@ -1,4 +1,5 @@
 ﻿using _0_Framework.Application;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NewsManagement.Application.Contrasts.NewsCategory;
@@ -7,7 +8,8 @@ using Newtonsoft.Json;
 
 namespace ServiceHost.Areas.Admin.Controllers.Category
 {
-	public class CategoryController : Controller
+	[Authorize(Policy = "Administration")]
+    public class CategoryController : Controller
 	{
 		private readonly INewsCategoryApplication _newsCategoryApplication;
 

@@ -1,4 +1,5 @@
 ﻿using _0_Framework.Application;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NewsManagement.Application.Contrasts.News;
 using NewsManagement.Application.Contrasts.NumberOfVisitChart;
@@ -6,6 +7,7 @@ using NewsWebsite.Common;
 
 namespace ServiceHost.Areas.Admin.Controllers.Dashboard
 {
+    [Authorize(Policy = "Administration")]
     public class DashboardController : Controller
     {
         private readonly INewsApplication _newsApplication;

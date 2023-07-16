@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NewsManagement.Application.Contrasts.Comment;
 using NewsManagement.Application.Contrasts.Tag;
 using Newtonsoft.Json;
 
 namespace ServiceHost.Areas.Admin.Controllers.Comment
 {
-	public class CommentsController : Controller
+    [Authorize(Policy = "Administration")]
+    public class CommentsController : Controller
 	{
 		private readonly ICommentApplication _commentApplication;
 
