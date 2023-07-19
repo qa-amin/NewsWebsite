@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BookShop.Areas.Admin.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NewsManagement.Application.Contrasts.News;
@@ -6,10 +7,13 @@ using NewsManagement.Application.Contrasts.NewsCategory;
 using NewsManagement.Application.Contrasts.Tag;
 using NewsManagement.Application.Contrasts.Video;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace ServiceHost.Areas.Admin.Controllers.News
 {
-    [Authorize(Policy = "Administration")]
+    //[Authorize(Policy = "Administration")]
+    [DisplayName("مدیریت اخبار")]
+    [Area("Admin")]
     public class NewsController : Controller
     {
         private readonly INewsApplication _newsApplication;
@@ -27,6 +31,8 @@ namespace ServiceHost.Areas.Admin.Controllers.News
         [Area("Admin")]
         [Route("/admin/news/index")]
         [HttpGet]
+        [HttpGet, DisplayName("مشاهده")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public IActionResult Index()
         {
             return View();
@@ -53,6 +59,8 @@ namespace ServiceHost.Areas.Admin.Controllers.News
         [Area("Admin")]
         [Route("/admin/news/Create")]
         [HttpGet]
+        [HttpGet, DisplayName("ایجاد")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public IActionResult Create()
         {
             ViewBag.Tags = _tagApplication.GetAllTags().Select(p => p.TagName).ToList();
@@ -97,6 +105,8 @@ namespace ServiceHost.Areas.Admin.Controllers.News
         [Area("Admin")]
         [Route("admin/news/Edit")]
         [HttpGet]
+        [HttpGet, DisplayName("ویرایش")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public IActionResult Edit(long id)
         {
 	        ViewBag.Tags = _tagApplication.GetAllTags().Select(p => p.TagName).ToList();
@@ -144,6 +154,8 @@ namespace ServiceHost.Areas.Admin.Controllers.News
 		[Area("Admin")]
         [Route("admin/news/Delete")]
         [HttpGet]
+        [HttpGet, DisplayName("حذف")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public IActionResult Delete(long id)
         {
             var video = _newsApplication.GetDetails(id);

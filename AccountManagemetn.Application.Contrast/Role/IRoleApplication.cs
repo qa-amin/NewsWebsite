@@ -17,6 +17,7 @@ namespace AccountManagement.Application.Contrast.Role
 
         (List<RoleViewModel>, int) Search(RoleSearchModel command);
 
-        
+        Domain.RoleAgg.Role FindClaimsInRole(long roleId);
+
     }
 }

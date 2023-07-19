@@ -1,12 +1,17 @@
 ﻿using _0_Framework.Application;
+using _0_Framework.Domain;
 using _0_Framework.Infrastructure;
 using AccountManagement.Domain.RoleAgg;
 using AccountManagement.Domain.UserAgg;
 using AccountManagement.Infrastructure.Configuration;
 using AccountManagement.Infrastructure.EFCore;
+using BookShop.Areas.Admin.Data;
+using BookShop.Areas.Admin.Services;
 using Identity.Bugeto.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using NewsManagement.Infrastructure.Configuration;
+using NewsWebsite.IocConfig;
 using ServiceHost;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +38,9 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 builder.Services.AddTransient<IFileUploader, FileUploader>();
+builder.Services.AddTransient<IMvcActionsDiscoveryService, MvcActionsDiscoveryService>();
+builder.Services.AddTransient<ISecurityTrimmingService, SecurityTrimmingService>();
+builder.Services.AddScoped<IAuthorizationHandler, DynamicPermissionsAuthorizationHandler>();
 
 builder.Services.AddAuthorization(options =>
 {
@@ -41,6 +49,9 @@ builder.Services.AddAuthorization(options =>
 
 	options.AddPolicy("Administration",
 		builder => builder.RequireRole(new List<string> { "مدیر سیستم" }));
+    options.AddPolicy(ConstantPolicies.DynamicPermission,
+        builder => builder.Requirements.Add(new DynamicPermissionRequirement()));
+
 });
 var app = builder.Build();
 

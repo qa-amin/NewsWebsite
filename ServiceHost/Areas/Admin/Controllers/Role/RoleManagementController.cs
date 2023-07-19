@@ -1,14 +1,18 @@
 ﻿using AccountManagement.Application.Contrast.Role;
+using BookShop.Areas.Admin.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using NewsManagement.Application.Contrasts.NewsCategory;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace ServiceHost.Areas.Admin.Controllers.Role
 {
-    [Authorize(Policy = "Administration")]
+    //[Authorize(Policy = "Administration")]
+    [DisplayName("مدیریت اخبار")]
+    [Area("Admin")]
     public class RoleManagementController : Controller
     {
         private readonly IRoleApplication _roleApplication;
@@ -20,7 +24,8 @@ namespace ServiceHost.Areas.Admin.Controllers.Role
 
         [Area("admin")]
         [Route("admin/role/index")]
-        [HttpGet]
+        [HttpGet, DisplayName("مشاهده")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public IActionResult Index()
         {
             return View();
@@ -49,7 +54,8 @@ namespace ServiceHost.Areas.Admin.Controllers.Role
 
         [Area("admin")]
         [Route("admin/role/Create")]
-        [HttpGet]
+        [HttpGet, DisplayName("ایجاد")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public IActionResult Create()
         {
             
@@ -103,7 +109,8 @@ namespace ServiceHost.Areas.Admin.Controllers.Role
 
 		[Area("admin")]
         [Route("admin/role/Edit")]
-        [HttpGet]
+        [HttpGet, DisplayName("ویرایش")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public IActionResult Edit(long id)
         {
             var newRole = _roleApplication.GetAllRoles()
@@ -139,7 +146,8 @@ namespace ServiceHost.Areas.Admin.Controllers.Role
 
         [Area("admin")]
         [Route("admin/role/Delete")]
-        [HttpGet]
+        [HttpGet, DisplayName("حذف")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public IActionResult Delete(long id)
         {
             var delRole = _roleApplication.GetAllRoles()

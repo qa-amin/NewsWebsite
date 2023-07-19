@@ -5,6 +5,7 @@ using _0_Framework.Application;
 using AccountManagement.Application.Contrast.User;
 using AccountManagement.Domain.RoleAgg;
 using AccountManagement.Domain.UserAgg;
+using AccountManagement.Domain.UserClaimAgg;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NewsWebsite.Common;
@@ -457,6 +458,49 @@ namespace AccountManagement.Application
 
 
             };
+        }
+
+        public User FindClaimsInUser(long userId)
+        {
+            return _userManager.Users.Include(p => p.Claims).FirstOrDefault(p => p.Id == userId);
+        }
+
+        public IdentityResult AddOrUpdateClaimsAsync(long userId, string userClaimType, IList<string> selectedUserClaimValues)
+        {
+            var user =  FindClaimsInUser(userId);
+            if (user == null)
+            {
+                return IdentityResult.Failed(new IdentityError
+                {
+                    Code = "NotFound",
+                    Description = "کاربر مورد نظر یافت نشد.",
+                });
+            }
+
+            var CurrentUserClaimValues = user.Claims.Where(r => r.ClaimType == userClaimType).Select(r => r.ClaimValue).ToList();
+            if (selectedUserClaimValues == null)
+                selectedUserClaimValues = new List<string>();
+
+            var newClaimValuesToAdd = selectedUserClaimValues.Except(CurrentUserClaimValues).ToList();
+            foreach (var claim in newClaimValuesToAdd)
+            {
+                user.Claims.Add(new UserClaim
+                {
+                    UserId = userId,
+                    ClaimType = userClaimType,
+                    ClaimValue = claim,
+                });
+            }
+
+            var removedClaimValues = CurrentUserClaimValues.Except(selectedUserClaimValues).ToList();
+            foreach (var claim in removedClaimValues)
+            {
+                var roleClaim = user.Claims.SingleOrDefault(r => r.ClaimValue == claim && r.ClaimType == userClaimType);
+                if (roleClaim != null)
+                    user.Claims.Remove(roleClaim);
+            }
+
+            return _userManager.UpdateAsync(user).Result;
         }
 
         private List<UserViewModel> GetPaginateUsers(int offset, int limit, string orderBy, string searchText)

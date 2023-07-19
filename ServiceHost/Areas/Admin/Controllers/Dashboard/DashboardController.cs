@@ -1,13 +1,16 @@
 ﻿using _0_Framework.Application;
+using BookShop.Areas.Admin.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NewsManagement.Application.Contrasts.News;
 using NewsManagement.Application.Contrasts.NumberOfVisitChart;
 using NewsWebsite.Common;
+using System.ComponentModel;
 
 namespace ServiceHost.Areas.Admin.Controllers.Dashboard
 {
-    [Authorize(Policy = "Administration")]
+    [DisplayName("داشبورد")]
+    [Area("Admin")]
     public class DashboardController : Controller
     {
         private readonly INewsApplication _newsApplication;
@@ -17,8 +20,10 @@ namespace ServiceHost.Areas.Admin.Controllers.Dashboard
             _newsApplication = newsApplication;
         }
 
-        [Area("admin")]
+        [Area("Admin")]
         [Route("admin/dashboard/index")]
+        [HttpGet, DisplayName("مشاهده")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public IActionResult Index()
         {
             ViewBag.News = _newsApplication.CountNews();

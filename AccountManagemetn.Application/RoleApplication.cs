@@ -8,6 +8,7 @@ using _0_Framework.Application;
 using AccountManagement.Domain.RoleAgg;
 using AccountManagement.Domain.UserAgg;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace AccountManagement.Application
@@ -138,7 +139,10 @@ namespace AccountManagement.Application
             return (roles, total);
         }
 
-       
+        public Role FindClaimsInRole(long roleId)
+        {
+            return _roleManager.Roles.Include(p => p.Claims).FirstOrDefault(c => c.Id == roleId);
+        }
 
 
         private List<RoleViewModel> GetPaginateRoles(int offset, int limit, bool? roleNameSortAsc, string searchText)

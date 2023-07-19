@@ -1,13 +1,17 @@
 ﻿using AccountManagement.Application;
 using AccountManagement.Application.Contrast.User;
+using BookShop.Areas.Admin.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NewsManagement.Application.Contrasts.Tag;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace ServiceHost.Areas.Admin.Controllers.Tag
 {
-    [Authorize(Policy = "Administration")]
+    //[Authorize(Policy = "Administration")]
+    [DisplayName("مدیریت برچسب ها")]
+    [Area("Admin")]
     public class TagController : Controller
     {
         private readonly ITagApplication _tagApplication;
@@ -19,6 +23,8 @@ namespace ServiceHost.Areas.Admin.Controllers.Tag
 
         [Area("Admin")]
         [Route("admin/tag/index")]
+        [HttpGet, DisplayName("مشاهده")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public IActionResult Index()
         {
             return View();
@@ -44,7 +50,8 @@ namespace ServiceHost.Areas.Admin.Controllers.Tag
 
         [Area("admin")]
         [Route("admin/tag/Create")]
-        [HttpGet]
+        [HttpGet, DisplayName("ایجاد")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public IActionResult Create()
         {
             return PartialView("_Create");
@@ -74,7 +81,8 @@ namespace ServiceHost.Areas.Admin.Controllers.Tag
 
         [Area("admin")]
         [Route("admin/tag/Edit")]
-        [HttpGet]
+        [HttpGet, DisplayName("ویرایش")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public IActionResult Edit(long id)
         {
             var tags = _tagApplication.GetDetails(id);
@@ -107,7 +115,8 @@ namespace ServiceHost.Areas.Admin.Controllers.Tag
 
         [Area("admin")]
         [Route("admin/tag/Delete")]
-        [HttpGet]
+        [HttpGet, DisplayName("حذف")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public IActionResult Delete(long id)
         {
 

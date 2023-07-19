@@ -1,12 +1,16 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BookShop.Areas.Admin.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NewsManagement.Application.Contrasts.Comment;
 using NewsManagement.Application.Contrasts.Tag;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace ServiceHost.Areas.Admin.Controllers.Comment
 {
-    [Authorize(Policy = "Administration")]
+    //[Authorize(Policy = "Administration")]
+    [DisplayName("مدیریت دسته بندی ها")]
+    [Area("Admin")]
     public class CommentsController : Controller
 	{
 		private readonly ICommentApplication _commentApplication;
@@ -18,7 +22,9 @@ namespace ServiceHost.Areas.Admin.Controllers.Comment
 
 		[Area("Admin")]
 		[Route("admin/comments/index")]
-		public IActionResult Index(long? newsId, bool? isConfirm)
+        [HttpGet, DisplayName("مشاهده")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        public IActionResult Index(long? newsId, bool? isConfirm)
 		{
 			return View(new CommentViewModel()
 			{
@@ -52,7 +58,9 @@ namespace ServiceHost.Areas.Admin.Controllers.Comment
 		[Area("Admin")]
 		[Route("admin/comments/Delete")]
 		[HttpGet]
-		public IActionResult Delete(long id)
+        [HttpGet, DisplayName("حذف")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        public IActionResult Delete(long id)
 		{
 			var comment = _commentApplication.GetDetails(id);
 
@@ -73,7 +81,9 @@ namespace ServiceHost.Areas.Admin.Controllers.Comment
 		[Area("Admin")]
 		[Route("admin/comments/ConfirmOrInconfirm")]
 		[HttpGet]
-		public IActionResult ConfirmOrInconfirm(long id)
+        [HttpGet, DisplayName("تایید نظر")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        public IActionResult ConfirmOrInconfirm(long id)
 		{
 			var comment = _commentApplication.GetDetails(id);
 

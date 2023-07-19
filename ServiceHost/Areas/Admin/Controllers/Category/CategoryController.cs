@@ -1,14 +1,18 @@
 ﻿using _0_Framework.Application;
+using BookShop.Areas.Admin.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Web.Mvc;
 using NewsManagement.Application.Contrasts.NewsCategory;
 using NewsWebsite.Entities;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace ServiceHost.Areas.Admin.Controllers.Category
 {
-	[Authorize(Policy = "Administration")]
+    [DisplayName("مدیریت دسته بندی ها")]
+    [Area("Admin")]
     public class CategoryController : Controller
 	{
 		private readonly INewsCategoryApplication _newsCategoryApplication;
@@ -18,18 +22,20 @@ namespace ServiceHost.Areas.Admin.Controllers.Category
 			_newsCategoryApplication = newsCategoryApplication;
 		}
 
-		[Area("admin")]
+		[Area("Admin")]
 		[Route("admin/category/index")]
-		[HttpGet]
-		public IActionResult Index()
+        [HttpGet, DisplayName("مشاهده")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        public IActionResult Index()
 		{
 			return View();
 		}
 
-		[Area("admin")]
-		[Route("admin/category/GetNewsCategory")]
+        [Area("Admin")]
+        [Route("admin/category/GetNewsCategory")]
 		[HttpGet]
-		public IActionResult GetNewsCategory(string search, string order, int offset, int limit, string sort)
+       
+        public IActionResult GetNewsCategory(string search, string order, int offset, int limit, string sort)
 		{
 			var searchModel = new NewsCategorySearchModel
 			{
@@ -45,10 +51,11 @@ namespace ServiceHost.Areas.Admin.Controllers.Category
 		}
 
 
-		[Area("admin")]
-		[Route("admin/category/Create")]
-		[HttpGet]
-		public IActionResult Create()
+        [Area("Admin")]
+        [Route("admin/category/Create")]
+        [HttpGet, AjaxOnly, DisplayName("درج")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
+        public IActionResult Create()
         {
             ViewBag.Categories = _newsCategoryApplication.GetAllCategories();
 
@@ -56,7 +63,7 @@ namespace ServiceHost.Areas.Admin.Controllers.Category
 		}
 
 
-        [Area("admin")]
+        [Area("Admin")]
         [Route("admin/category/Create")]
         [HttpPost]
         public IActionResult Create(CreateNewsCategory command)
@@ -74,9 +81,10 @@ namespace ServiceHost.Areas.Admin.Controllers.Category
         }
 
 
-        [Area("admin")]
+        [Area("Admin")]
         [Route("admin/category/Edit")]
-        [HttpGet]
+        [HttpGet, AjaxOnly, DisplayName("ویرایش")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public IActionResult Edit(int id)
         {
             ViewBag.Categories = _newsCategoryApplication.GetAllCategories();
@@ -85,7 +93,7 @@ namespace ServiceHost.Areas.Admin.Controllers.Category
         }
 
 
-        [Area("admin")]
+        [Area("Admin")]
         [Route("admin/category/Edit")]
         [HttpPost]
         public IActionResult Edit(EditNewsCategory command)
@@ -102,9 +110,10 @@ namespace ServiceHost.Areas.Admin.Controllers.Category
         }
 
 
-        [Area("admin")]
+        [Area("Admin")]
         [Route("admin/category/Delete")]
-        [HttpGet]
+        [HttpGet, AjaxOnly, DisplayName("حذف")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public IActionResult Delete(int id)
         {
             var newsCategory = _newsCategoryApplication.Getdetails(id);
@@ -112,7 +121,7 @@ namespace ServiceHost.Areas.Admin.Controllers.Category
         }
 
 
-        [Area("admin")]
+        [Area("Admin")]
         [Route("admin/category/Delete")]
         [HttpPost]
         public void Delete(EditNewsCategory command)

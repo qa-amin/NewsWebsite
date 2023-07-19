@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using _0_Framework.Application;
+using Microsoft.AspNetCore.Identity;
 
 namespace AccountManagement.Application.Contrast.User
 {
@@ -23,6 +24,10 @@ namespace AccountManagement.Application.Contrast.User
         ProfileViewModel GetProfileDetail( long id);
 
         UserViewModel GetUserInfo(long userId);
+
+        Domain.UserAgg.User FindClaimsInUser(long userId);
+
+        IdentityResult AddOrUpdateClaimsAsync(long userId, string userClaimType, IList<string> selectedUserClaimValues);
 
 
     }

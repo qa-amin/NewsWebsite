@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BookShop.Areas.Admin.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NewsManagement.Application.Contrasts.Tag;
 using NewsManagement.Application.Contrasts.Video;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 namespace ServiceHost.Areas.Admin.Controllers.Video
 {
-    [Authorize(Policy = "Administration")]
+    [DisplayName("مدیریت ویدیو ها")]
+    [Area("Admin")]
     public class VideoController : Controller
     {
         private readonly IVideoApplication _videoApplication;
@@ -18,7 +21,8 @@ namespace ServiceHost.Areas.Admin.Controllers.Video
 
         [Area("Admin")]
         [Route("admin/video/index")]
-        [HttpGet]
+        [HttpGet, DisplayName("مشاهده")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public IActionResult Index()
         {
             return View();
@@ -44,7 +48,8 @@ namespace ServiceHost.Areas.Admin.Controllers.Video
 
         [Area("Admin")]
         [Route("admin/video/Create")]
-        [HttpGet]
+        [HttpGet, DisplayName("ایجاد")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public IActionResult Create()
         {
             return PartialView("_Create", new CreateVideo());
@@ -74,7 +79,8 @@ namespace ServiceHost.Areas.Admin.Controllers.Video
 
         [Area("Admin")]
         [Route("admin/video/Edit")]
-        [HttpGet]
+        [HttpGet, DisplayName("ویرایش")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public IActionResult Edit(long id)
         {
             var video = _videoApplication.GetDetails(id);
@@ -104,7 +110,8 @@ namespace ServiceHost.Areas.Admin.Controllers.Video
 
         [Area("Admin")]
         [Route("admin/video/Delete")]
-        [HttpGet]
+        [HttpGet, DisplayName("حذف")]
+        [Authorize(Policy = ConstantPolicies.DynamicPermission)]
         public IActionResult Delete(long id)
         {
             var video = _videoApplication.GetDetails(id);
